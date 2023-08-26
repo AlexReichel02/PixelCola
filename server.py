@@ -11,6 +11,7 @@ class Server:
         self.clients = []
         self.address_length = 0
         self.client_socket = None
+        self.secretWord="cake"
       
 
     def start_server(self):
@@ -30,7 +31,10 @@ class Server:
 
     def handle_client(self, client_socket):
         username = client_socket.recv(1500).decode()
-        while True:
+        #welcomeMsg = "play y or n"
+        #client_socket.send(welcomeMsg.encode())
+        choice = client_socket.recv(1500).decode()
+        while True and choice == "y":
             try:
                 msg = client_socket.recv(1500).decode()
                 if not msg:
@@ -38,10 +42,32 @@ class Server:
                     self.clients.remove(client_socket)
                     client_socket.close()
                     break
+
                 print(f"Received from {username}: {msg}")
-                
-                # Broadcast the message to all connected clients
                 self.broadcast_message(f"{username}: {msg}", client_socket)
+
+              
+              
+                if msg == self.secretWord:
+                         winMsg = "The secret word: " + msg + " was Guessed Correctly from: " + username+ "\n"
+                         print(f"The secret word: {msg} was Guessed Correctly from {username}\n")
+                         client_socket.send(winMsg.encode())
+                         self.broadcast_message(f"{username}: {winMsg}", client_socket)
+                         break
+
+
+                if msg == "Exit" or msg =="exit":
+                    exitMsg = "Have a good day"
+                    client_socket.send(exitMsg.encode())
+                    print(f"{username} manually disconnected")
+                    self.clients.remove(client_socket)
+                    client_socket.close()
+
+                  
+        
+                       # break
+                    # Broadcast the message to all connected client
+
                 
             except ConnectionResetError:
                 print(f"{username} forcibly disconnected")
@@ -49,7 +75,7 @@ class Server:
                 client_socket.close()
                 break
 
-        print(f"{username} handler exited")
+       
 
     def broadcast_message(self, msg, sender_socket):
         for client_socket in self.clients:
