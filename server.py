@@ -11,7 +11,7 @@ class Server:
         self.clients = []
         self.address_length = 0
         self.client_socket = None
-        self.secretWord="cake"
+        self.secretWord="Fake"
       
 
     def start_server(self):
