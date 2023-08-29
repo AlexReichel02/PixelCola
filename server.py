@@ -11,7 +11,9 @@ class Server:
         self.clients = []
         self.address_length = 0
         self.client_socket = None
-        self.secretWord="cake"
+        self.secretWord="Fake"
+        self.gameOver=False
+        self.chatOver=False
       
 
     def start_server(self):
@@ -30,11 +32,12 @@ class Server:
            
 
     def handle_client(self, client_socket):
+        
         username = client_socket.recv(1500).decode()
         #welcomeMsg = "play y or n"
         #client_socket.send(welcomeMsg.encode())
-        choice = client_socket.recv(1500).decode()
-        while True and choice == "y":
+        #choice = client_socket.recv(1500).decode()
+        while True:
             try:
                 msg = client_socket.recv(1500).decode()
                 if not msg:
@@ -43,17 +46,56 @@ class Server:
                     client_socket.close()
                     break
 
-                print(f"Received from {username}: {msg}")
-                self.broadcast_message(f"{username}: {msg}", client_socket)
 
-              
-              
-                if msg == self.secretWord:
-                         winMsg = "The secret word: " + msg + " was Guessed Correctly from: " + username+ "\n"
-                         print(f"The secret word: {msg} was Guessed Correctly from {username}\n")
-                         client_socket.send(winMsg.encode())
-                         self.broadcast_message(f"{username}: {winMsg}", client_socket)
-                         break
+                print(f"Received from {username}: {msg}")
+                #self.broadcast_message(f"{username}: {msg}", client_socket)
+
+                if(msg =="chat"):
+                    print(f"{username} Wants to Chat")
+                   # chatMsg = "Welcome to the Chat! " +username+ "\n"
+                   # client_socket.send(chatMsg.encode())
+
+                    while self.chatOver == False:
+                         chat = client_socket.recv(1500).decode()
+
+                         print(f"Received Chat from {username}: {chat}")
+
+                         if chat == "quit":
+                             self.chatOver =True
+                             break
+
+                         self.broadcast_message(f"Chat: {username}: {chat}", client_socket)
+                         
+
+
+
+                if(msg == "play"):
+                    print(f"{username} Wants to Play")
+                  #  playMsg = "Welcome to the guessing game, guess the word ! " +username+ "\n"
+                  #  client_socket.send(playMsg.encode())
+                    self.gameOver = False
+                    while self.gameOver == False:
+                       
+                        #answerMsg = "Enter Choice:  \n"
+                        #client_socket.send(answerMsg.encode())
+                        answer = client_socket.recv(1500).decode()
+                        print(f"Received Guess from {username}: {answer}")
+
+
+                        if answer == "quit":
+                             self.gameOver =True
+
+                        if answer == self.secretWord:
+                             winMsg = "The secret word: " + answer + " was Guessed Correctly from: " + username+ " they won"
+                             print(f"The secret word: {answer} was Guessed Correctly from {username} they won\n")
+                             client_socket.send(winMsg.encode())
+                             self.broadcast_message(f"{username}: {winMsg}", client_socket)
+                             self.gameOver = True
+                             break
+                        else:
+                             wrongMsg = "Wrong Word Guessed, Try Again"
+                             client_socket.send(wrongMsg.encode())
+
 
 
                 if msg == "Exit" or msg =="exit":
@@ -64,7 +106,8 @@ class Server:
                     client_socket.close()
 
                   
-        
+                self.chatOver =False
+                #self.gameOver =False
                        # break
                     # Broadcast the message to all connected client
 
