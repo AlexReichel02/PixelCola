@@ -34,9 +34,7 @@ class Server:
     def handle_client(self, client_socket):
         
         username = client_socket.recv(1500).decode()
-        #welcomeMsg = "play y or n"
-        #client_socket.send(welcomeMsg.encode())
-        #choice = client_socket.recv(1500).decode()
+        
         while True:
             try:
                 msg = client_socket.recv(1500).decode()
@@ -48,12 +46,11 @@ class Server:
 
 
                 print(f"Received from {username}: {msg}")
-                #self.broadcast_message(f"{username}: {msg}", client_socket)
+               
 
                 if(msg =="chat"):
                     print(f"{username} Wants to Chat")
-                   # chatMsg = "Welcome to the Chat! " +username+ "\n"
-                   # client_socket.send(chatMsg.encode())
+                
 
                     while self.chatOver == False:
                          chat = client_socket.recv(1500).decode()
@@ -71,16 +68,13 @@ class Server:
 
                 if(msg == "play"):
                     print(f"{username} Wants to Play")
-                  #  playMsg = "Welcome to the guessing game, guess the word ! " +username+ "\n"
-                  #  client_socket.send(playMsg.encode())
+               
                     self.gameOver = False
                     while self.gameOver == False:
                        
-                        #answerMsg = "Enter Choice:  \n"
-                        #client_socket.send(answerMsg.encode())
+                      
                         answer = client_socket.recv(1500).decode()
                         print(f"Received Guess from {username}: {answer}")
-
 
                         if answer == "quit":
                              self.gameOver =True
@@ -107,10 +101,7 @@ class Server:
 
                   
                 self.chatOver =False
-                #self.gameOver =False
-                       # break
-                    # Broadcast the message to all connected client
-
+               
                 
             except ConnectionResetError:
                 print(f"{username} forcibly disconnected")
