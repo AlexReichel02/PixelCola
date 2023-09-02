@@ -10,7 +10,9 @@ body{
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: #9d14dc;
+    background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
+    box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
+    height: 1200px;
 }
 
 .container{
@@ -18,7 +20,14 @@ body{
     border-radius: 10px;
     background: #222;
     margin-top: 150px;
-    height: 420px;
+    height: 600px;
+
+
+    border-color: #26bf47;
+    box-shadow: 0 0 100px #26bf47;
+  
+	transition: 0.5s;
+
 }
 
 .container h2{
@@ -27,6 +36,7 @@ body{
     padding: 20px 25px;
     border-bottom: 1px solid #333;
     color: #fff;
+    text-align: center;
 }
 
 .container .content{
@@ -100,6 +110,7 @@ body{
     font-size: 16px;
     border-radius: 8px;
     width: calc(50% - 6 px);
+    width: 300px;
 }
 
 .buttons button:active{
@@ -107,17 +118,17 @@ body{
 }
 
 .buttons .refresh-word{
-    background: #6c757d;
-}
-
-.buttons .refresh-word:hover{
-    background: #5f666d;
-}
-
-.buttons .check-word{
     background: #5372f0;
 }
 
-.buttons .check-word:hover{
+.buttons .refresh-word:hover{
     background: #2c52ed;
+}
+
+.buttons .check-word{
+    background-image: linear-gradient(to right, #40e495, #30dd8a, #2bb673);
+}
+
+.buttons .check-word:hover{
+    background: #30dd8a;
 }

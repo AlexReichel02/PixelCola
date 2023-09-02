@@ -10,72 +10,70 @@
     integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
     crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
+    <title>{% block title %}Word Scramble{% endblock %}</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Navbar</a>
+          <a class="navbar-brand" href="#">Pixelcola</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            {% if user.is_authenticated %}
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link" href="/game">Game</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/pythonInfo">Python Info</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/logout">Logout</a>
               </li>
+              
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" href="/sign-up">Sign Up</a>
               </li> 
-              <li class="nav-item">
-                <a class="nav-link" href="/game">Game</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li>
-             
             </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+            {% endif %}
           </div>
         </div>
       </nav>
 <div class="container">
     <h2>Word Scramble</h2>
+
+   
     <div class="content">
         <p class="word"></p>
         <div class="details">
+            <p> Welcome {{ user.email }}</p>
+            <p>Current Score:  {{user.score}} </p>
+            <p> Current Level: {{user.level}} </p>
+            <p class="message">Message: <span></span></p>
             <p class="hint">Hint: <span></span></p>
             <p class="time">Time Left: <span></span></p>
         </div>
         <input class="userInput" type="text" spellcheck="false" placeholder="Enter a valid word">
         <div class="buttons">
             <button class="refresh-word">Refresh word</button>
-            <button class="check-word">Check Word</button>
+            <form method="POST">
+
+                  <input type="hidden" class="score"  id="score" name="score"value ="" />
+
+                  <button class="check-word" type="submit">Check Word</button>
+              </form>
+            
         </div>
     </div>
 </div>
-
-
-<button type="button" class="close" onClick="test()">
-    <span aria-hidden="true">&times;</span>
-</button>
 
 
 </body>
@@ -103,25 +101,33 @@ hintText = document.querySelector(".hint span"),
 timeText= document.querySelector(".time span"),
 inputField = document.querySelector(".userInput"),
 refreshBtn = document.querySelector(".refresh-word"),
-checkBtn = document.querySelector(".check-word");
+checkBtn = document.querySelector(".check-word"),
+messageText = document.querySelector(".message span"),
+scoreText = document.querySelector(".score"),
+levelText = document.querySelector(".level");
 
 let correctWord, timer;
+let gameStarted=false;
 
 const initTimer = (maxTime) => {
     clearInterval(timer);
+    
     timer = setInterval(()=>{
         if(maxTime >0){
             maxTime--;
            // timeText.innerText = maxTime;
             return (timeText.innerText = maxTime);
         }
-        alert("Time off ${correctWord.toUpperCase()} was the correct word");
+        let text={correctWord};
+        messageText.innerText="Time off" +correctWord +"  was the correct word";
+        //alert("Time off ${correctWord.toUpperCase()} was the correct word");
         initGame();
     }, 1000);
 };
 
 const initGame = () => {
-    initTimer(30)
+    gameStarted=true;
+    initTimer(30);
     let randomObj = words[Math.floor(Math.random() * words.length)];
     let wordArray = randomObj.word.split("");
     for( let i = wordArray.length-1;i>0;i--){
@@ -131,24 +137,35 @@ const initGame = () => {
     wordText.innerText = wordArray.join("");
     hintText.innerText=randomObj.hint;
     correctWord=randomObj.word.toLowerCase();
-    inputField.value=" ";
+    inputField.value="";
     inputField.setAttribute("maxlength",correctWord.length+1);
 
 };
 
-//initGame();
+
 const checkWord = () => {
-
-    let userWord = inputField.value.toLowerCase();
-    console.log(userWord)
+    if(gameStarted==true){
+        let userWord = inputField.value.toLowerCase();
+        console.log(userWord)
+        console.log(correctWord)
     
-    if(!userWord) return alert("Please enter word to check");
+        if(!userWord) return alert("Please enter word to check");
 
-    if(userWord != correctWord)
-        return alert("Oops! ${userWord} is not a correct Word");
-   
-    alert("Congrats! ${correctWord.toUpperCase() is the correct Word}");
-    initGame();
+        if(userWord != correctWord)
+            return (messageText.innerText = "Oops! " + userWord + " is not the correct Word");
+        //alert("Oops! ${userWord} is not a correct Word");
+        messageText.innerText="Congrats! " + correctWord +" is the correct Word";
+        console.log(scoreText)
+        console.log(levelText)
+        score.value=score.value+5;
+
+    //level.value=level.value+5;
+    //alert("Congrats! ${correctWord.toUpperCase() is the correct Word}");
+        initGame();
+    }else{
+        messageText.innerText="Game has not been started";
+        score.value=score.value+0;
+    }
 };
 
 refreshBtn.addEventListener("click", initGame);
