@@ -152,18 +152,23 @@ const checkWord = () => {
         if(!userWord) return alert("Please enter word to check");
 
         if(userWord != correctWord)
+            alert(messageText.innerText = "Oops! " + userWord + " is not the correct Word");
             return (messageText.innerText = "Oops! " + userWord + " is not the correct Word");
+          
         //alert("Oops! ${userWord} is not a correct Word");
+        alert("Congrats! " + correctWord +" is the correct Word");
         messageText.innerText="Congrats! " + correctWord +" is the correct Word";
-        console.log(scoreText)
-        console.log(levelText)
+  
+        console.log(scoreText);
+        console.log(levelText);
         score.value=score.value+5;
 
     //level.value=level.value+5;
     //alert("Congrats! ${correctWord.toUpperCase() is the correct Word}");
         initGame();
     }else{
-        messageText.innerText="Game has not been started";
+        alert("Game has not started");
+        messageText.innerText="Game has not started";
         score.value=score.value+0;
     }
 };

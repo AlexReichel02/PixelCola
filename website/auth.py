@@ -72,11 +72,11 @@ def sign_up():
 def game():
     if request.method == 'POST': 
         score = request.form.get('score')#Gets the note from the HTML 
-       # level = request.form.get('level')
+       
 
 
-        if score == 0:
-            flash('No Score', category='error') 
+        if score == "":
+            flash('No Score or Level', category='error') 
         else:
             current_user.score += int(score)
 
