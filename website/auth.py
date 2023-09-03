@@ -43,6 +43,7 @@ def sign_up():
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
+
         user = User.query.filter_by(email=email).first()
         if user:
             flash('Email already exists.', category='error')
@@ -56,7 +57,7 @@ def sign_up():
             flash('Password must be at least 7 characters.', category='error')
         else:
             new_user = User(email=email, first_name=first_name, password=generate_password_hash(
-                password1, method='sha256'))
+                password1, method='sha256'),score=0,level=0)
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
@@ -67,5 +68,41 @@ def sign_up():
 
 
 @auth.route('/game', methods=['GET', 'POST'])
+@login_required
 def game():
+    if request.method == 'POST': 
+        score = request.form.get('score')#Gets the note from the HTML 
+       
+
+
+        if score == "":
+            flash('No Score or Level', category='error') 
+        else:
+            current_user.score += int(score)
+
+            if current_user.score > 10:
+                current_user.level = 1
+
+            if current_user.score > 20:
+                current_user.level = 2
+
+            if current_user.score > 30:
+                current_user.level = 3
+
+            if current_user.score > 40:
+                current_user.level = 4
+
+            if current_user.score > 50:
+                current_user.level = 5
+
+
+            db.session.commit()
+            flash('Score updated!', category='success')
+
     return render_template("game.html", user=current_user)
+
+
+
+@auth.route('/Python Info', methods=['GET', 'POST'])
+def pythonInfo():
+    return render_template("pythonInfo.html", user=current_user)
