@@ -72,32 +72,28 @@ def sign_up():
 def game():
     if request.method == 'POST': 
         score = request.form.get('score')#Gets the note from the HTML 
-       
+        temp = int(score)
 
+        current_user.score += temp
 
-        if score == "":
-            flash('No Score or Level', category='error') 
-        else:
-            current_user.score += int(score)
-
-            if current_user.score > 10:
+        if current_user.score > 10:
                 current_user.level = 1
 
-            if current_user.score > 20:
+        if current_user.score > 20:
                 current_user.level = 2
 
-            if current_user.score > 30:
+        if current_user.score > 30:
                 current_user.level = 3
 
-            if current_user.score > 40:
+        if current_user.score > 40:
                 current_user.level = 4
 
-            if current_user.score > 50:
+        if current_user.score > 50:
                 current_user.level = 5
 
 
-            db.session.commit()
-            flash('Score updated!', category='success')
+        db.session.commit()
+        flash('Score updated!', category='success')
 
     return render_template("game.html", user=current_user)
 
