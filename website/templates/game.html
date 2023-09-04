@@ -10,7 +10,9 @@
     integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
     crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>{% block title %}Word Scramble{% endblock %}</title>
+  
   </head>
   <body>
     <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
@@ -47,6 +49,15 @@
           </div>
         </div>
       </nav>
+<br />
+<br />
+<div class="banner" id="banner">
+    <p> Welcome {{ user.email }}</p>
+    <p>Current Score: <span id="current-score">{{ user.score }}</span></p>
+    <p> Current Level: <span id="current-level">{{ user.level }}</span> </p>
+   
+</div>
+
 <div class="container">
     <h2>Word Scramble</h2>
 
@@ -54,22 +65,19 @@
     <div class="content">
         <p class="word"></p>
         <div class="details">
-            <p> Welcome {{ user.email }}</p>
-            <p>Current Score:  {{user.score}} </p>
-            <p> Current Level: {{user.level}} </p>
-            <p class="message">Message: <span></span></p>
             <p class="hint">Hint: <span></span></p>
             <p class="time">Time Left: <span></span></p>
+            <p class="message">Message: <span></span></p>
         </div>
         <input class="userInput" type="text" spellcheck="false" placeholder="Enter a valid word">
         <div class="buttons">
             <button class="refresh-word">Refresh word</button>
-            <form method="POST">
+            <form  class="checkForm" method="POST">
+                <input type="hidden" class="score"  id="score" name="score"value ="" />
+           
 
-                  <input type="hidden" class="score"  id="score" name="score"value ="" />
-
-                  <button class="check-word" type="submit">Check Word</button>
-              </form>
+            <button class="check-word" type="submit">Check Word</button>
+        </form>
             
         </div>
     </div>
@@ -78,22 +86,74 @@
 
 </body>
 </html>
-
-
+<script
 <script type="text/javascript">
+    function refresh(){
+       $("#banner").load(window.location.href +" #banner");
+    }
+  
 let words = [
     {
-            word: "test",
-            hint: "about to test"
+            word: "Confidentiality",
+            hint: "a baseline security consideration?"
     },
     {
-        word: "test",
-        hint: "about to test"
+            word: "Stakeholders",
+            hint: "the deciding factor in the prioritization of requirements?"
     },
     {
-        word: "test",
-        hint: "about to test"
+            word: "Product Scope",
+            hint: "refers to the work that is to be completed?"
     },
+    {
+            word: "E-R Model",
+            hint: "relational diagram is used to establish tables?",
+    },
+    {
+            word: "Object",
+            hint: "the instantiation of the class template?"
+    },
+    {
+            word: "Association",
+            hint: "what level of system description can vulnerability mapping begin?"
+    },
+    {
+            word: "Object oriented",
+            hint: "procedural programming still exist in the form of most object functions?"
+    },
+    {
+            word: "Attack Surface",
+            hint: "the profile of the system that is accessible to potential attackers"
+    },
+    {
+            word: "Virtualization",
+            hint: "use of one machine to simulate the operation of another machine or machines."
+    },
+    {
+            word: "Network mapping",
+            hint: "you will determine live hosts, routers, and servers to establish a picture of the network topology."
+    },
+    {
+            word: "Development",
+            hint: "phase of an update should the placement of new components be logical within the overall structure of the existing system?"
+    },
+    {
+            word: "Port scanning",
+            hint: "act of checking the available ports that can communicate on a network connection."
+    },
+    {
+            word: "Awareness",
+            hint: "the first step in the development of an effective computer security training program?"
+    },
+    {
+            word: "Guidelines",
+            hint: " set of constraints that can be used toward the implementation of a process."
+    },
+    {
+            word: "Buffer",
+            hint: "Small custom web applications generally experience what type of overflow?"
+    },
+   
 ]
 
 const wordText = document.querySelector(".word"),
@@ -104,7 +164,14 @@ refreshBtn = document.querySelector(".refresh-word"),
 checkBtn = document.querySelector(".check-word"),
 messageText = document.querySelector(".message span"),
 scoreText = document.querySelector(".score"),
-levelText = document.querySelector(".level");
+levelText = document.querySelector(".level"),
+form = document.querySelector(".checkForm");
+
+
+form.addEventListener('submit',(e=>{
+  e.preventDefault();
+
+}))
 
 let correctWord, timer;
 let gameStarted=false;
@@ -119,7 +186,7 @@ const initTimer = (maxTime) => {
             return (timeText.innerText = maxTime);
         }
         let text={correctWord};
-        messageText.innerText="Time off" +correctWord +"  was the correct word";
+        messageText.innerText="Time off " +correctWord +"  was the correct word";
         //alert("Time off ${correctWord.toUpperCase()} was the correct word");
         initGame();
     }, 1000);
@@ -149,13 +216,35 @@ const checkWord = () => {
         console.log(userWord)
         console.log(correctWord)
     
-        if(!userWord) return alert("Please enter word to check");
+        if(!userWord){
+            score.value=0;
+            return alert("Please enter word to check");
+        } 
 
         if(userWord == correctWord){
+
+
             alert("Congrats! " + correctWord +" is the correct Word");
             messageText.innerText="Congrats! " + correctWord +" is the correct Word";
+
             score.value=5;
-            initGame();
+
+            $.ajax({
+            url: '/update_score',
+            type: 'POST',
+            data: { score: score.value },
+            success: function (data) {
+                // Update the score displayed on the page
+                $('#current-score').text(data.score);
+                $('#current-level').text(data.level);
+            },
+            error: function (error) {
+                console.error('Error updating score:', error);
+            }
+            });
+            //refresh();
+            return initGame();
+           
         }else{
             score.value=0;
             alert(messageText.innerText = "Oops! " + userWord + " is not the correct Word");

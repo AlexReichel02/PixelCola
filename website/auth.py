@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db   ##means from __init__.py import db
@@ -67,35 +67,42 @@ def sign_up():
     return render_template("sign_up.html", user=current_user)
 
 
-@auth.route('/game', methods=['GET', 'POST'])
-@login_required
-def game():
-    if request.method == 'POST': 
-        score = request.form.get('score')#Gets the note from the HTML 
-        temp = int(score)
+@auth.route('/update_score', methods=['POST'])
+def update_score():
+    new_score = request.form.get('score')
+    temp = int(new_score)
 
-        current_user.score += temp
+    current_user.score += temp
 
-        if current_user.score > 10:
+    if current_user.score > 10:
                 current_user.level = 1
 
-        if current_user.score > 20:
+    if current_user.score > 20:
                 current_user.level = 2
 
-        if current_user.score > 30:
+    if current_user.score > 30:
                 current_user.level = 3
 
-        if current_user.score > 40:
+    if current_user.score > 40:
                 current_user.level = 4
 
-        if current_user.score > 50:
+    if current_user.score > 50:
                 current_user.level = 5
 
 
-        db.session.commit()
-        flash('Score updated!', category='success')
+    db.session.commit()
+    flash('Score updated!', category='success')
+    return jsonify(score=current_user.score,level=current_user.level)
+
+
+
+@auth.route('/game', methods=['GET', 'POST'])
+@login_required
+def game():
+   
 
     return render_template("game.html", user=current_user)
+   
 
 
 
