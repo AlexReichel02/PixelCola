@@ -11,6 +11,9 @@ class Server:
         self.clients = []
         self.address_length = 0
         self.client_socket = None
+        self.secretWord="Fake"
+        self.gameOver=False
+        self.chatOver=False
       
 
     def start_server(self):
@@ -29,7 +32,9 @@ class Server:
            
 
     def handle_client(self, client_socket):
+        
         username = client_socket.recv(1500).decode()
+        
         while True:
             try:
                 msg = client_socket.recv(1500).decode()
@@ -38,10 +43,65 @@ class Server:
                     self.clients.remove(client_socket)
                     client_socket.close()
                     break
+
+
                 print(f"Received from {username}: {msg}")
+               
+
+                if(msg =="chat"):
+                    print(f"{username} Wants to Chat")
                 
-                # Broadcast the message to all connected clients
-                self.broadcast_message(f"{username}: {msg}", client_socket)
+
+                    while self.chatOver == False:
+                         chat = client_socket.recv(1500).decode()
+
+                         print(f"Received Chat from {username}: {chat}")
+
+                         if chat == "quit":
+                             self.chatOver =True
+                             break
+
+                         self.broadcast_message(f"Chat: {username}: {chat}", client_socket)
+                         
+
+
+
+                if(msg == "play"):
+                    print(f"{username} Wants to Play")
+               
+                    self.gameOver = False
+                    while self.gameOver == False:
+                       
+                      
+                        answer = client_socket.recv(1500).decode()
+                        print(f"Received Guess from {username}: {answer}")
+
+                        if answer == "quit":
+                             self.gameOver =True
+
+                        if answer == self.secretWord:
+                             winMsg = "The secret word: " + answer + " was Guessed Correctly from: " + username+ " they won"
+                             print(f"The secret word: {answer} was Guessed Correctly from {username} they won\n")
+                             client_socket.send(winMsg.encode())
+                             self.broadcast_message(f"{username}: {winMsg}", client_socket)
+                             self.gameOver = True
+                             break
+                        else:
+                             wrongMsg = "Wrong Word Guessed, Try Again"
+                             client_socket.send(wrongMsg.encode())
+
+
+
+                if msg == "Exit" or msg =="exit":
+                    exitMsg = "Have a good day"
+                    client_socket.send(exitMsg.encode())
+                    print(f"{username} manually disconnected")
+                    self.clients.remove(client_socket)
+                    client_socket.close()
+
+                  
+                self.chatOver =False
+               
                 
             except ConnectionResetError:
                 print(f"{username} forcibly disconnected")
@@ -49,7 +109,7 @@ class Server:
                 client_socket.close()
                 break
 
-        print(f"{username} handler exited")
+       
 
     def broadcast_message(self, msg, sender_socket):
         for client_socket in self.clients:
