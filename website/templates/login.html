@@ -1,6 +1,21 @@
 {% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
     %}
+    <style>
+      body { 
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-image : url({{url_for('static', filename='cyberWarningGIF.gif')}})       
+      }
+    </style>
+
+    <audio autoplay>
+      <source src={{ url_for('static', filename='Elektronomia & RUD - Rollercoaster.mp3')}} type="audio/mpeg">
+    </audio>
+
     <form method="POST">
+      <!-- <img background-image={{ url_for('static', filename='cyberWarningGIF.gif')}}> -->
+      <div class="body"></div>
       <h3 align="center">Login</h3>
       <div class="form-group">
         <label for="email">Email Address</label>
