@@ -1,0 +1,51 @@
+* {    
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+body {     
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;    
+    background-image: url('cyberWarningGIF.gif');    
+}
+
+.btn {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0);
+
+}
+
+.form-control {
+    color: rgba(rgb(0, 0, 0), green, blue, alpha);
+    border-bottom-color: rgba(rgb(0, 0, 0), rgb(0, 0, 0), rgb(0, 0, 0), alpha);
+    box-shadow: none !important;
+    border: none;
+    border-bottom: 2px solid;
+    border-radius: 4px 4px 0 0;
+}
+
+h3 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: red;
+    text-align: center;
+}
+
+form {
+    margin-top: 150px;
+    position: relative;
+    width: 280px;
+    height: 300px;
+    background: transparent;
+    border: 2px solid rgba(red, green, rgba(0, 0, 255, 0.425), alpha);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(7px);
+}

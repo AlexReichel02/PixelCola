@@ -8,8 +8,9 @@ from flask_login import login_user, login_required, logout_user, current_user
 auth = Blueprint('auth', __name__)
 
 @auth.route('/')
-def Login_Music():
+def Login_Music():  #plays music in the login screen
       return render_template('static', 'Elektronomia & RUD - Rollercoaster.mp3')
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
