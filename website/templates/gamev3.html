@@ -1,0 +1,36 @@
+
+{% extends "base.html" %} {% block title %}Home{% endblock %}
+{% block content
+    %}
+
+<br />
+<br />
+
+ 
+<div class="banner" id="banner">
+
+    <p> Welcome {{ user.email }}</p>
+    <p>Current Score: <span id="current-score">{{ user.score }}</span></p>
+    <p> Current Level: <span id="current-level">{{ user.level }}</span> </p>
+</div>
+
+<div class="section">
+{% if user.level < 2 %}
+<p>NOT ENOUGH POINTS!</p>
+
+{% else %}
+
+<p>game!</p>
+{% endif %}
+
+</div>
+
+
+<br />
+<br />
+<br />
+
+
+</body>
+</html>
+{%endblock%}
