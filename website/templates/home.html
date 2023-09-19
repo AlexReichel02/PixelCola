@@ -1,6 +1,16 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
     %}
     <h1 align="center">Notes</h1>
+
+  <img src="../static/pythonchatgame.webp" alt="Workplace" usemap="#workmap">
+<map name="workmap">
+  <area shape="rect" coords="34,44,270,350" alt="Computer" href="computer.htm">
+
+  <area shape="rect" coords="290,172,333,250" alt="Phone" href="phone.htm">
+  <area shape="circle" coords="337,300,44" alt="Coffee" href="coffee.htm">
+</map>
+   
+
     <ul class="list-group list-group-flush" id="notes">
       {% for note in user.notes %}
       <li class="list-group-item">
@@ -18,4 +28,7 @@
         <button type="submit" class="btn btn-primary">Add Note</button>
       </div>
     </form>
+
+
+
     {% endblock %}

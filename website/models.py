@@ -17,4 +17,9 @@ class User(db.Model, UserMixin):
     notes = db.relationship('Note')
     level = db.Column(db.Integer())
     score= db.Column(db.Integer())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
+
+
   

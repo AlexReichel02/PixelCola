@@ -99,13 +99,23 @@ def update_score():
 @auth.route('/game', methods=['GET', 'POST'])
 @login_required
 def game():
-   
-
     return render_template("game.html", user=current_user)
    
 
+@auth.route('/gameV2', methods=['GET', 'POST'])
+@login_required
+def gameV2():
+    return render_template("gamev2.html", user=current_user)
 
 
-@auth.route('/Python Info', methods=['GET', 'POST'])
-def pythonInfo():
-    return render_template("pythonInfo.html", user=current_user)
+@auth.route('/gameV3', methods=['GET', 'POST'])
+@login_required
+def gameV3():
+    return render_template("gamev3.html", user=current_user)
+
+@auth.route('/leaderBoard', methods=['GET', 'POST'])
+@login_required
+def leaderBoard():
+    leaderBoard_data = User.query.order_by(User.score.desc()).all()
+    return render_template('leaderboard.html', leaderBoard_data=leaderBoard_data,user=current_user)
+ 
