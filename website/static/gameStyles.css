@@ -4,30 +4,124 @@
     box-sizing: border-box;
 }
 
+form{
+    color: white;
+}
+
+table{
+    color: white;
+}
+
+p{
+    color: white;
+}
+
 body{
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
-    box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
+    background-image: linear-gradient(to right, #111, #111, #111, #111);
+    color: white;
     min-height: 1000px;
 }
 
-area{
+h1{
+    color: white;
+}
+
+.map{
+    width: 1100px;
+   
+    height: 1000px;
+    position: relative;
+    display: flex;
+
+    margin: auto;
+
+    
+}
+
+.map::before{
+    content: "";
+    background: url("../static/map1.png");
+    background-size: cover;
+    background-position: center ;
+    height: 100%;
+    width: 100%;
     position: absolute;
-    z-index: 1;
-    opacity: 0.5;
-    background-color: red;
-  
+    top: 0;
+    left: 0;
+    z-index:-1;
+}
+
+.game1{
+    width: 175px;
+    height: 50px;
+    position: relative;
+    background-color: #04befe;
+
+    color: white;
+    text-align: center;
+ margin: auto;
+ position: absolute;
+ margin-left: 150px;
+ margin-top: 40px;
+ animation: pulse 1.5s infinite;
+ border-color: #bf2e26;
+ box-shadow: 0 0 10px #bf4026;
 }
 
 
+.game2{
+    width: 175px;
+    height: 50px;
+    position: absolute;
+    background-color: #26bf47;
 
-img {
-    position: relative; /* Ensure the image is a positioned element */
-    z-index: 0; /* Default z-index for the map image */
-    background-color: transparent;
+    color: white;
+    text-align: center;
+ margin: auto;
+    
+ margin-left: 800px;
+ margin-top: 700px;
+ animation: pulse 1.5s infinite;
+ border-color: #bf2e26;
+ box-shadow: 0 0 10px #bf4026;
+ 
 }
+
+.game3{
+    width: 175px;
+    height: 50px;
+    position: absolute;
+    background-color: #3f86ed;
+   
+    color: white;
+    text-align: center;
+    margin: auto;
+
+    margin-left: 700px;
+    margin-top: 400px;
+    animation: pulse 1.5s infinite;
+    border-color: #bf2e26;
+    box-shadow: 0 0 50px #bf4026;
+   
+    
+}
+
+@keyframes pulse {
+    0% {
+      transform: scale(1); /* Start at normal size */
+    }
+    50% {
+      transform: scale(1.1); /* Scale up to 110% size */
+    }
+    100% {
+      transform: scale(1); /* Return to normal size */
+    }
+  }
+
+
 
 .containerV2{
     
@@ -240,6 +334,82 @@ body{
     border-radius: 8px;
     width: calc(50% - 6 px);
     width: 150px;
+}
+
+
+.map{
+    width: 400px;
+   
+    height: 800px;
+    position: relative;
+    
+    margin: auto;
+    border: solid red;
+    
+}
+
+.map::before{
+    content: "";
+    background: url("../static/map1.png");
+    background-size:cover;
+    background-position: center ;
+    height: 50%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index:-1;
+}
+
+.game1{
+    width: 120px;
+    height: 50px;
+    position: relative;
+    background-color: #04befe;
+    font-size: 14px;
+    color: white;
+    text-align: center;
+ margin: auto;
+ position: absolute;
+ margin-left: 50px;
+
+    
+}
+
+
+.game2{
+    width: 100px;
+    
+    position: absolute;
+    background-color: #26bf47;
+
+    color: white;
+    text-align: center;
+ margin: auto;
+    
+margin-left: 300px;
+margin-top: 250px;
+
+}
+
+.game3{
+    width: 100px;
+    height: 50px;
+    position: absolute;
+    background-color: #3f86ed;
+   
+    color: white;
+    text-align: center;
+    margin: auto;
+
+    margin-left: 200px;
+    margin-top: 150px;
+
+
+    
+   
+
+    
 }
 
 
