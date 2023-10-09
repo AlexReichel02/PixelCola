@@ -3,7 +3,15 @@
     <br />
   
     <h1 align="center">PixelCola</h1>
-    <br />
+
+    <div class="banner" id="banner">
+
+      <p> Welcome {{ user.email }}</p>
+      <p>Current Score: <span id="current-score">{{ user.score }}</span></p>
+      <p> Current Level: <span id="current-level">{{ user.level }}</span> </p>
+  </div>
+<br />
+<div class="circle">
 
     <div class="map">
      
@@ -11,6 +19,13 @@
 
           <div class="accordion" id="accordionExample">
             <div class="accordion-item">
+              {% if user.level >= 1 %} <!-- Add your required user level here -->
+              <div class="completed">
+              <p class="map-p">Completed</p>
+              <img src="../static/greencheck.png" alt="Green check mark" class="greencheck">
+             <!-- Green dot for high enough user level -->
+            </div>
+            {% endif %}
               <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                  Pensacola Hub
@@ -20,6 +35,7 @@
                 <div class="accordion-body">
                   <strong>This is the first item's accordion body.</strong> 
                   <a  href="/game">CyberScramble</a>
+                  
                 </div>
               </div>
             </div>
@@ -33,6 +49,13 @@
 
           <div class="accordion" id="accordionExample2">
             <div class="accordion-item">
+              {% if user.level >= 3 %} <!-- Add your required user level here -->
+              <div class="completed">
+              <p class="map-p">Completed</p>
+              <img src="../static/greencheck.png" alt="Green check mark" class="greencheck">
+             <!-- Green dot for high enough user level -->
+            </div>
+            {% endif %}
               <h2 class="accordion-header" id="headingTwo">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                  Miami Hub
@@ -55,6 +78,13 @@
 
           <div class="accordion" id="accordionExample3">
             <div class="accordion-item">
+              {% if user.level >= 2 %} <!-- Add your required user level here -->
+              <div class="completed">
+              <p class="map-p">Completed</p>
+              <img src="../static/greencheck.png" alt="Green check mark" class="greencheck">
+             <!-- Green dot for high enough user level -->
+            </div>
+            {% endif %}
               <h2 class="accordion-header" id="headingThree">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                 Tampa Hub
@@ -73,32 +103,8 @@
 
     </div>
 
-    <br />
-    <br />
-    <br />
-
- 
-    <h1 align="center">Notes</h1>
-    <ul class="list-group list-group-flush" id="notes">
-      {% for note in user.notes %}
-      <li class="list-group-item">
-        {{ note.data }}
-        <button type="button" class="close" onClick="deleteNote({{ note.id }})">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </li>
-      {% endfor %}
-    </ul>
-    <form method="POST">
-      <textarea name="note" id="note" class="form-control"></textarea>
-      <br />
-      <div align="center">
-        <button type="submit" class="btn btn-primary">Add Note</button>
-      </div>
-    </form>
-
-    <br />
-    <br />
-    <br />
+  </div>
+  <br />
+  <br />
 
     {% endblock %}

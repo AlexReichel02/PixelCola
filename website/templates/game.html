@@ -1,4 +1,5 @@
 
+
     <head>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="../static/gameStyles.css">
@@ -12,6 +13,9 @@
        
       
       </head>
+
+
+
       <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Pixelcola</a>
@@ -63,7 +67,7 @@
 
     <p> Welcome {{ user.email }}</p>
     <p>Current Score: <span id="current-score">{{ user.score }}</span></p>
-    <p> Current Level: <span id="current-level">{{ user.level }}</span> </p>
+    <p> Current Level: <span class="level" id="current-level">{{ user.level }}</span> </p>
 </div>
 
 <br />
@@ -82,6 +86,13 @@
             <p class="hint">Hint: <span></span></p>
             <p class="time">Time Left: <span></span></p>
             <p class="message">Message: <span></span></p>
+          
+            <div class="animation">
+              <p>You can Advance or keep playing</p>
+            </div>
+
+         
+            <br />
         
         </div>
         <input class="userInput" type="text" spellcheck="false" placeholder="Enter a valid word">
@@ -195,7 +206,7 @@ let gameStarted=false;
 
 const initTimer = (maxTime) => {
     clearInterval(timer);
-    
+   
     timer = setInterval(()=>{
         if(maxTime >0){
             maxTime--;
@@ -209,8 +220,13 @@ const initTimer = (maxTime) => {
     }, 1000);
 };
 
-const initGame = () => {
+function initGame (){
+  
+  animationElement.style.display = 'none'; // Hide the animation
+ // animationElement.classList.remove('animate'); 
+ 
     gameStarted=true;
+    handleWin();
     initTimer(30);
     let randomObj = words[Math.floor(Math.random() * words.length)];
     let wordArray = randomObj.word.split("");
@@ -226,6 +242,17 @@ const initGame = () => {
 
 };
 
+const winMessage = document.querySelector('.win-message');
+const animationElement = document.querySelector('.animation');
+const level = document.querySelector('.level');
+
+function handleWin() {
+  if(level.textContent == '1'){
+  console.log(level);
+  animationElement.style.display = 'block'; // Display the animation
+  animationElement.classList.add('animate');
+  }
+}
 
 const checkWord = () => {
     if(gameStarted==true){
@@ -241,10 +268,11 @@ const checkWord = () => {
 
         if(userWord == correctWord){
 
-
+           // handleWin();
            
             messageText.innerText="Congrats! " + correctWord +" is the correct Word";
-
+            
+    
             score.value=5;
 
             $.ajax({
@@ -261,7 +289,14 @@ const checkWord = () => {
             }
             });
             //refresh();
-            return initGame();
+
+           
+           
+        
+            setTimeout(function(){
+             
+              initGame()
+            },1000);
            
         }else{
             score.value=0;

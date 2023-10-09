@@ -5,11 +5,30 @@
 }
 
 form{
+    
     color: white;
+    width: 500px;
+    justify-content: center;
+    margin: auto;
+    height: 450px;
+    border:solid #222 2px;
+    
+    margin-top: 200px;
+    padding: 10px;
+    background-color: #333;
+
 }
+
+
 
 table{
     color: white;
+    background-color: #555;
+    width: 1100px;
+    border: solid #555 3px;
+        margin: auto;
+        justify-content: center;
+  
 }
 
 p{
@@ -31,12 +50,11 @@ h1{
 
 .map{
     width: 1100px;
-   
     height: 1000px;
     position: relative;
     display: flex;
-
     margin: auto;
+
 
     
 }
@@ -46,12 +64,12 @@ h1{
     background: url("../static/map1.png");
     background-size: cover;
     background-position: center ;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index:-1;
+    height: 70%;
+    width: 70%;
+    margin: auto;
+    justify-self: center;
+   
+    
 }
 
 .game1{
@@ -65,7 +83,7 @@ h1{
  margin: auto;
  position: absolute;
  margin-left: 150px;
- margin-top: 40px;
+ margin-top: 175px;
  animation: pulse 1.5s infinite;
  border-color: #bf2e26;
  box-shadow: 0 0 50px #bf4026;
@@ -82,7 +100,7 @@ h1{
     text-align: center;
  margin: auto;
     
- margin-left: 800px;
+ margin-left: 700px;
  margin-top: 700px;
  animation: pulse 1.5s infinite;
  border-color: #bf2e26;
@@ -100,7 +118,7 @@ h1{
     text-align: center;
     margin: auto;
 
-    margin-left: 700px;
+    margin-left: 600px;
     margin-top: 400px;
     animation: pulse 1.5s infinite;
     border-color: #bf2e26;
@@ -128,7 +146,7 @@ h1{
     border-radius: 10px;
     background: #222;
     margin-top: 50px;
-    height: 600px;
+    height: 650px;
     margin: auto;
     border-color: #26bf47;
     box-shadow: 0 0 100px #26bf47;
@@ -138,7 +156,7 @@ h1{
 }
 
 .banner{
-    padding-top: 20px;
+    
     justify-content: center;
     margin: auto;
     height: 100px;
@@ -148,6 +166,7 @@ h1{
     display: flex;
     width: 1140px;
     border-radius: 100px;
+    padding: 10px;
 }
 
 .banner p{
@@ -274,10 +293,7 @@ h1{
     background: #30dd8a;
 }
 
-table{
-    margin: auto;
-    justify-content: center;
-}
+
 
 td{
 padding: 20px;
@@ -285,11 +301,104 @@ padding: 20px;
 
 th{
     padding: 20px;
+    color: white;
+    font-size: 24px;
 }
 
 tr{
     padding: 20px;
+    color: white;
 }
+
+.refresh-word{
+    width: 100px;
+    height: 70px;
+}
+
+.check-word{
+    width: 100px;
+    height: 70px;
+}
+
+.checkForm{
+    margin-top: 0px;
+    padding: 0px;
+    height: 70px;
+}
+
+
+
+@keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .animate {
+    animation: pulse 1s infinite;
+  }
+
+.animation {
+    justify-content: center;
+    margin: auto;
+    width: 500px;
+    height: 60px;
+    background-color: #555;
+    border: solid 2px #333;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    display: none; /* Initially hidden */
+    /* Add animation properties here */
+  }
+
+  .map-p{
+    text-align: center;
+    color:black;
+    justify-self: center;
+    padding: 10px;
+  }
+
+  .greencheck{
+    height: 50px;
+    width: 50px;
+  }
+  
+  .completed{
+      height: 50px;
+      width: 100px;
+      display: flex;
+      justify-content: center;
+      margin: auto;
+  }
+
+  .circle{
+    justify-content: center;
+    margin: auto;
+    width: 1000px; /* Set the width and height to create a circle */
+   height: 1000px;
+  border-radius: 50%; /* Make it a circle */
+  border: solid 3px #3498db; /* Set the background color of the circle */
+  
+  }
+
+
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg); /* Start the rotation from 0 degrees */
+    }
+    100% {
+      transform: rotate(360deg); /* End the rotation at 360 degrees (full circle) */
+    }
+  }
+
 
 @media  screen and (max-width: 740px) {
 

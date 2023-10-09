@@ -5,26 +5,34 @@
 <br />
 <br />
 
- 
+<br />
+<br />
 <div class="section">
     <h1>Leaderboard</h1>
-    
-    <table>
-        <tr>
+    <br />
+<br />
+    <table class="table">
         
-            <th>Name</th>
-            <th>Score</th>
-            <th>Level</th>
-            
-        </tr>
-        {% for user in leaderBoard_data %}
-        <tr>
-            <td>{{ user.first_name }}</td>
-            <td>{{ user.score }}</td>
-            <td>{{ user.level }}</td>
-           
-        </tr>
-        {% endfor %}
+        <tbody>
+            <tr>
+        
+                <th>Name</th>
+                <th>Score</th>
+                <th>Level</th>
+                
+            </tr>
+            {% for user in leaderBoard_data %}
+            <tr>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.score }}</td>
+                <td>{{ user.level }}</td>
+               
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    <table>
+        
     </table>
 
 </div>
