@@ -111,6 +111,19 @@ def gameV2():
 @auth.route('/gameV3', methods=['GET', 'POST'])
 @login_required
 def gameV3():
+    if request.method == 'POST':
+        score1 = request.form.get('score1')
+        score2 = request.form.get('score2')
+        score3 = request.form.get('score3')
+        score4 = request.form.get('score4')
+        score5 = request.form.get('score5')
+
+        print(score1)
+        print(score2)
+        print(score3)
+        print(score4)
+        print(score5)
+
     return render_template("gamev3.html", user=current_user)
 
 @auth.route('/leaderBoard', methods=['GET', 'POST'])
