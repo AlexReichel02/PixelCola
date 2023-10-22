@@ -1,36 +1,551 @@
 
-{% extends "base.html" %} {% block title %}Home{% endblock %}
-{% block content
-    %}
 
+<head>
+    <meta charset="utf-8" />
+  
+
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" 
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+    crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+   
+    <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../static/gameStyles.css">
+  <!-- Stylesheet -->
+
+  </head>
+
+
+
+  <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Pixelcola</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        {% if user.is_authenticated %}
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+              </li>
+            
+              <li class="nav-item">
+                <a class="nav-link" href="/game">CyberScramble</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/gameV2">Portris</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/gameV3">HangMan</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/leaderBoard">Leader Board</a>
+              </li> 
+            </ul>
+          {% else %}
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/sign-up">Sign Up</a>
+          </li> 
+        </ul>
+        {% endif %}
+       
+      </div>
+    </div>
+  </nav>
 <br />
 <br />
+<br />
 
- 
 <div class="banner" id="banner">
 
-    <p> Welcome {{ user.email }}</p>
-    <p>Current Score: <span id="current-score">{{ user.score }}</span></p>
-    <p> Current Level: <span id="current-level">{{ user.level }}</span> </p>
+<p> Welcome {{ user.email }}</p>
+<p>Current Score: <span id="current-score">{{ user.score }}</span></p>
+<p> Current Level: <span class="level" id="current-level">{{ user.level }}</span> </p>
 </div>
 
-<div class="section">
-{% if user.level < 2 %}
-<p>NOT ENOUGH POINTS!</p>
+<br />
+<br />
+<br />
 
+{% if user.level < 1 %}
+<div class="game3section">
+  <div class="container">
+    <div id="options-container"></div>
+    <br />
+    <div class="HangmanSide">
+
+     <div class="HangmanLeftSide">
+    <div id="hintContainer"></div>
+    <div class="imageContainer" id="imageContainer"></div>
+    <br />
+    <div id="letter-container" class="letter-container hide"></div>
+    </div>
+
+    <div class="HangmanRightSide">
+    <div id="user-input-section"></div>
+    <div class="animation">
+      <p>You can Advance or keep playing</p>
+    </div>
+    <canvas id="canvas"></canvas>
+    </div>
+    </div>
+
+
+    <div class="modal" id="myModal">
+      <div class="modal-content">
+         
+          <div id="result-text"></div>
+          <button class="close" id="new-game-button">New Game</button>
+     
+      </div>
+  </div>
+    <div id="new-game-container" class="new-game-popup hide">
+    </div>
+  </div>
+</div>
 {% else %}
-
-<p>game!</p>
+<p>NOT ENOUGH POINTS!</p>
 {% endif %}
 
-</div>
-
-
 <br />
 <br />
 <br />
-
-
 </body>
 </html>
-{%endblock%}
+<script type="text/javascript">
+  //Initial References
+const hintSection = document.getElementById("hintContainer");
+const letterContainer = document.getElementById("letter-container");
+const optionsContainer = document.getElementById("options-container");
+const userInputSection = document.getElementById("user-input-section");
+const newGameContainer = document.getElementById("new-game-container");
+const newGameButton = document.getElementById("new-game-button");
+const canvas = document.getElementById("canvas");
+const resultText = document.getElementById("result-text");
+const imageContainer = document.getElementById("imageContainer");
+
+const modal = document.getElementById("myModal");
+const closeBtn = document.getElementsByClassName("close")[0];
+closeBtn.onclick = function () {
+      modal.style.display = "none";
+};
+
+const animationElement = document.querySelector('.animation');
+const level = document.querySelector('.level');
+
+function handleWin() {
+  if(level.textContent == '2'){
+  console.log(level);
+  animationElement.style.display = 'block'; // Display the animation
+  animationElement.classList.add('animate');
+  }else{
+    animationElement.style.display='none';
+  }
+}
+
+//Options values for buttons
+let options = {
+    Network : [
+    {
+            word: "Firewall",
+            hint: "A protective barrier between a computer network and the internet, designed to block unauthorized access.",
+            image: "../static/suit.jpeg"
+    },
+    {
+            word: "Router",
+            hint: "A networking device that forwards data packets between computer networks.",
+            image: "../static/lawyer5.jpg"
+    },
+    {
+            word: "Proxy",
+            hint: "An intermediate server that acts as a gateway between a user's computer and the internet, enhancing security and privacy.",
+            image: "../static/lawyer6.jpg"
+    },
+    {
+            word: "DNS",
+            hint: "Converts human-readable domain names into IP addresses used by computers.",
+            image: "../static/suit.jpeg"
+    },
+    {
+            word: "Payload",
+            hint: "The part of a malicious software that performs the intended harmful action.",
+            image: "../static/lawyer5.jpg"
+    },
+    {
+            word: "Perimeter",
+            hint: "The boundary that separates a network from external entities, defining the extent of security measures.",
+            image: "../static/lawyer6.jpg"
+    },
+    {
+            word: "Packet",
+            hint: "A unit of data transmitted over a network.",
+            image: "../static/lawyer5.jpg"
+    },
+    {
+            word: "Port",
+            hint: "A virtual endpoint for communication in an operating system.",
+            image: "../static/lawyer6.jpg"
+    },
+    {
+            word: "Subnet",
+            hint: "A logically segmented section of a larger network.",
+            image: "../static/suit.jpeg"
+    },
+    {
+            word: "VLAN",
+            hint: "A network within a network, enabling segmentation for security and traffic management.",
+            image: "../static/suit.jpeg"
+    },
+],
+  Information: [
+  {
+            word: "Cryptography",
+            hint: "The practice of secure communication in the presence of adversaries.",
+            image: "../static/suit.jpeg"
+    },
+    {
+            word: "Phishing",
+            hint: "A fraudulent attempt to obtain sensitive information by disguising as a trustworthy entity.",
+            image: "../static/lawyer5.jpg"
+    },
+    {
+            word: "Spoofing",
+            hint: "Faking the sender's identity in electronic communication.",
+            image: "../static/lawyer6.jpg"
+    },
+    {
+            word: "Decryption",
+            hint: "Reversing encryption to convert ciphertext back into plaintext.",
+            image: "../static/suit.jpeg"
+    },
+    {
+            word: "Steganography",
+            hint: "Concealing information within other non-secret text or data.",
+            image: "../static/lawyer5.jpg"
+    },
+    {
+            word: "Hash",
+            hint: "A fixed-size numerical representation of data, used for data integrity verification.",
+            image: "../static/lawyer6.jpg"
+    },
+    {
+            word: "Privacy",
+            hint: "Protecting sensitive information from unauthorized access or disclosure.",
+            image: "../static/lawyer6.jpg"
+    },
+    {
+            word: "Biometrics",
+            hint: "Using physical or behavioral characteristics for identification.",
+            image: "../static/suit.jpeg"
+    },
+    {
+            word: "Redundancy",
+            hint: "Duplication of critical components or functions for reliability.",
+            image: "../static/lawyer5.jpg"
+    },
+    {
+            word: "Anonymity",
+            hint: "Ensuring that a user's identity remains hidden.",
+            image: "../static/lawyer6.jpg"
+    },
+  ],
+  Application: [
+  {
+            word: "Sandbox",
+            hint: "Isolating applications to prevent interactions with other software.",
+            image: "../static/suit.jpeg"
+    },
+    {
+            word: "Cookie",
+            hint: "Small pieces of data stored by a web browser, often used for user authentication.",
+            image: "../static/lawyer5.jpg"
+    },
+    {
+            word: "Fuzzing",
+            hint: "Testing software with random inputs to find vulnerabilities.",
+            image: "../static/lawyer6.jpg"
+    },
+    {
+            word: "OWASP",
+            hint: "A community that focuses on improving software security.",
+            image: "../static/suit.jpeg"
+    },
+    {
+            word: "Escalation",
+            hint: "Elevating privileges or access rights beyond what is intended.",
+            image: "../static/lawyer5.jpg"
+    },
+    {
+            word: "Refactoring",
+            hint: "Restructuring existing computer code without changing its external behavior.",
+            image: "../static/lawyer6.jpg"
+    },
+    {
+            word: "Watermarking",
+            hint: "Embedding digital information in media files to verify authenticity.",
+            image: "../static/lawyer6.jpg"
+    },
+    {
+            word: "DOS",
+            hint: "Flooding a system with traffic to make it unavailable to users.",
+            image: "../static/suit.jpeg"
+    },
+  ],
+  
+};
+
+//count
+let winCount = 0;
+let count = 0;
+
+let chosenWord = "";
+
+//Display option buttons
+const displayOptions = () => {
+  optionsContainer.innerHTML += `<h3>Please Select An Option Between The Various Forms Of Security</h3>`;
+  let buttonCon = document.createElement("div");
+  for (let value in options) {
+    buttonCon.innerHTML += `<button class="options" onclick="generateWord('${value}')">${value}</button>`;
+  }
+  optionsContainer.appendChild(buttonCon);
+};
+
+//Block all the Buttons
+const blocker = () => {
+  handleWin();
+  let optionsButtons = document.querySelectorAll(".options");
+  let letterButtons = document.querySelectorAll(".letters");
+  //disable all options
+  optionsButtons.forEach((button) => {
+    button.disabled = true;
+  });
+
+  //disable all letters
+  letterButtons.forEach((button) => {
+    button.disabled.true;
+  });
+  newGameContainer.classList.remove("hide");
+};
+
+//Word Generator
+const generateWord = (optionValue) => {
+
+  let optionsButtons = document.querySelectorAll(".options");
+  //If optionValur matches the button innerText then highlight the button
+  optionsButtons.forEach((button) => {
+    if (button.innerText.toLowerCase() === optionValue) {
+      button.classList.add("active");
+    }
+    button.disabled = true;
+  });
+
+  //initially hide letters, clear previous word
+  letterContainer.classList.remove("hide");
+  userInputSection.innerText = "";
+  hintSection.innerText="";
+  imageContainer.innerText="";
+
+  let optionArray = options[optionValue];
+  //choose random word
+  chosenObject = optionArray[Math.floor(Math.random() * optionArray.length)];
+ 
+
+  chosenWord = chosenObject.word.toUpperCase();
+  hint = chosenObject.hint;
+
+  const img = document.createElement("img");
+  img.src = chosenObject.image;
+  imageContainer.append(img);
+
+  //replace every letter with span containing dash
+  let displayItem = chosenWord.replace(/./g, '<span class="dashes">_</span>');
+  hintSection.innerHTML = hint;
+  //Display each element as span
+  userInputSection.innerHTML = displayItem;
+};
+
+//Initial Function (Called when page loads/user presses new game)
+const initializer = () => {
+  winCount = 0;
+  count = 0;
+
+  //Initially erase all content and hide letteres and new game button
+  userInputSection.innerHTML = "";
+  optionsContainer.innerHTML = "";
+  hintSection.innerHTML="";
+  imageContainer.innerHTML="";
+  letterContainer.classList.add("hide");
+  newGameContainer.classList.add("hide");
+  letterContainer.innerHTML = "";
+
+  //For creating letter buttons
+  for (let i = 65; i < 91; i++) {
+    let button = document.createElement("button");
+    button.classList.add("letters");
+    //Number to ASCII[A-Z]
+    button.innerText = String.fromCharCode(i);
+    //character button click
+    button.addEventListener("click", () => {
+      let charArray = chosenWord.split("");
+      let dashes = document.getElementsByClassName("dashes");
+      //if array contains clciked value replace the matched dash with letter else dram on canvas
+      if (charArray.includes(button.innerText)) {
+        charArray.forEach((char, index) => {
+          //if character in array is same as clicked button
+          if (char === button.innerText) {
+            //replace dash with letter
+            dashes[index].innerText = char;
+            //increment counter
+            winCount += 1;
+            //if winCount equals word lenfth
+            if (winCount == charArray.length) {
+              modal.style.display = "block";
+              resultText.innerHTML = `<h2 class='win-msg'>You Win!!</h2><p>The word was <span>${chosenWord}</span></p>`;
+
+              $.ajax({
+            url: '/update_score',
+            type: 'POST',
+            data: { score: 5 },
+            success: function (data) {
+                // Update the score displayed on the page
+                $('#current-score').text(data.score);
+                $('#current-level').text(data.level);
+            },
+            error: function (error) {
+                console.error('Error updating score:', error);
+            }
+            });
+             
+              //block all buttons
+              blocker();
+            }
+          }
+        });
+      } else {
+        //lose count
+        count += 1;
+        //for drawing man
+        drawMan(count);
+        //Count==6 because head,body,left arm, right arm,left leg,right leg
+        if (count == 6) {
+          modal.style.display = "block";
+  
+       
+          resultText.innerHTML = `<h2 class='lose-msg'>You Lose!!</h2><p>The word was <span>${chosenWord}</span></p>`;
+          blocker();
+        }
+      }
+      //disable clicked button
+      button.disabled = true;
+    });
+    letterContainer.append(button);
+  }
+
+  displayOptions();
+  //Call to canvasCreator (for clearing previous canvas and creating initial canvas)
+  let { initialDrawing } = canvasCreator();
+  //initialDrawing would draw the frame
+  initialDrawing();
+};
+
+//Canvas
+const canvasCreator = () => {
+  let context = canvas.getContext("2d");
+  context.beginPath();
+  context.strokeStyle = "#000";
+  context.lineWidth = 2;
+
+  //For drawing lines
+  const drawLine = (fromX, fromY, toX, toY) => {
+    context.moveTo(fromX, fromY);
+    context.lineTo(toX, toY);
+    context.stroke();
+  };
+
+  const head = () => {
+    context.beginPath();
+    context.arc(70, 30, 10, 0, Math.PI * 2, true);
+    context.stroke();
+  };
+
+  const body = () => {
+    drawLine(70, 40, 70, 80);
+  };
+
+  const leftArm = () => {
+    drawLine(70, 50, 50, 70);
+  };
+
+  const rightArm = () => {
+    drawLine(70, 50, 90, 70);
+  };
+
+  const leftLeg = () => {
+    drawLine(70, 80, 50, 110);
+  };
+
+  const rightLeg = () => {
+    drawLine(70, 80, 90, 110);
+  };
+
+  //initial frame
+  const initialDrawing = () => {
+    //clear canvas
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+    //bottom line
+    drawLine(10, 130, 130, 130);
+    //left line
+    drawLine(10, 10, 10, 131);
+    //top line
+    drawLine(10, 10, 70, 10);
+    //small top line
+    drawLine(70, 10, 70, 20);
+  };
+
+  return { initialDrawing, head, body, leftArm, rightArm, leftLeg, rightLeg };
+};
+
+//draw the man
+const drawMan = (count) => {
+  let { head, body, leftArm, rightArm, leftLeg, rightLeg } = canvasCreator();
+  switch (count) {
+    case 1:
+      head();
+      break;
+    case 2:
+      body();
+      break;
+    case 3:
+      leftArm();
+      break;
+    case 4:
+      rightArm();
+      break;
+    case 5:
+      leftLeg();
+      break;
+    case 6:
+      rightLeg();
+      break;
+    default:
+      break;
+  }
+};
+
+//New Game
+newGameButton.addEventListener("click", initializer);
+window.onload = initializer;
+</script>
