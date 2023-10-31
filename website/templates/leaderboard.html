@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %}
+{% block content
+    %}
+
+<br />
+<br />
+
+<br />
+<br />
+<div class="section">
+    <h1>Leaderboard</h1>
+    <br />
+<br />
+    <table class="table">
+        
+        <tbody>
+            <tr>
+        
+                <th>Name</th>
+                <th>Score</th>
+                <th>Level</th>
+                
+            </tr>
+            {% for user in leaderBoard_data %}
+            <tr>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.score }}</td>
+                <td>{{ user.level }}</td>
+               
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    <table>
+        
+    </table>
+
+</div>
+
+
+<br />
+<br />
+<br />
+
+
+</body>
+</html>
+{% endblock %}
