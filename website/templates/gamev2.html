@@ -16,8 +16,8 @@
 </div>
 
 <div class="section">
-    {% if user.level < 1 %} <h5>NOT ENOUGH POINTS!</h5>
-
+    {% if user.score < 1 %} <h5>NOT ENOUGH POINTS!</h5>
+    
         {% else %}
         <p>game!</p>
         {% endif %}
@@ -28,339 +28,874 @@
 <br />
 <br />
 <br />
-<canvas id="tetrisCanvas"></canvas>
+<p id="instructions">A: LEFT, S: DOWN, D: RIGHT. Match the Protocal to the correct PORT</p>
+<canvas id="PortrisCanvas"></canvas>
+<button id="Button">Start Game</button>
+<!-- <button type="button" class="btn">start game</button> -->
 
+</div>
 </body>
 
 </html>
 
 <script>
-    let canvas;
-    let ctx;
-    let gBArrayHeight = 20;
-    let gBArrayWidth = 12;
-    let startX = 4;
-    let startY = 0;
-    let bottomX = 0;
-    let bottomY = 20
-    let score = 0;
-    let level = 1;
-    let winOrLose = "Playing";
-    let coordinateArray = [...Array(gBArrayHeight)].map(e => Array(gBArrayWidth).fill(0));
-    let curTetromino = [[1, 0], [0, 1], [1, 1], [2, 1]];
-    let baseTetromino = [[1, 0], [0, 1], [1, 1], [2, 1]];
-    let tetrominos = [];
-    let tetrominoColors = ['orange'];
-    let curTetrominoColor;
-    let gameBoardArray = [...Array(gBArrayHeight)].map(e => Array(gBArrayWidth).fill(0));
-    let stoppedShapeArray = [...Array(gBArrayHeight)].map(e => Array(gBArrayWidth).fill(0));
-    let DIRECTION = {
-        IDLE: 0,
-        DOWN: 1,
-        LEFT: 2,
-        RIGHT: 3
-    };
-    let direction;
 
-
-    class Coordinates {
-        constructor(x, y) {
-            this.x = x;
-            this.y = y;
-        }
+let canvas;
+let context2D;
+let DIRECTION = {
+    IDLE: 0,
+    DOWN: 1,
+    LEFT: 2,
+    RIGHT: 3,
+    UP: 4
+};
+let direction;
+let score = 0;
+let gameOver = false;
+let questionCount = 0;
+let currentQuestion;
+let currentAnswers;
+const questions = [
+    {
+        x: 150, y: 10, width: 50, height: 50, question: "Question : 1", answer: "ANSWER : 1",
+        answers: [
+            { x: 4, y: 320, width: 40, height: 40, answer: "YUPP" },
+            { x: 100, y: 320, width: 40, height: 40, answer: "**" },
+            { x: 200, y: 320, width: 40, height: 40, answer: "YUPPERS" },
+            { x: 298, y: 320, width: 40, height: 40, answer: "ANSWER : 1" }
+        ]
+    },
+    {
+        x: 150, y: 10, width: 50, height: 50, question: "Question : 2", answer: "ANSWER : 2",
+        answers: [
+            { x: 4, y: 320, width: 40, height: 40, answer: "no Way" },
+            { x: 100, y: 320, width: 40, height: 40, answer: "ANSWER : 2" },
+            { x: 200, y: 320, width: 40, height: 40, answer: "**" },
+            { x: 298, y: 320, width: 40, height: 40, answer: "INCORRECT" }
+        ]
+    },
+    {
+        x: 150, y: 10, width: 50, height: 50, question: "Question : 3", answer: "ANSWER : 3",
+        answers: [
+            { x: 4, y: 320, width: 40, height: 40, answer: "QQ" },
+            { x: 100, y: 320, width: 40, height: 40, answer: "/|" },
+            { x: 200, y: 320, width: 40, height: 40, answer: "ANSWER : 3" },
+            { x: 298, y: 320, width: 40, height: 40, answer: "maybe" }
+        ]
+    },
+    {
+        x: 150, y: 10, width: 50, height: 50, question: "Question : 4", answer: "ANSWER : 4",
+        answers: [
+            { x: 4, y: 320, width: 40, height: 40, answer: "ANSWER : 4" },
+            { x: 100, y: 320, width: 40, height: 40, answer: "Noth this time" },
+            { x: 200, y: 320, width: 40, height: 40, answer: "<L>" },
+            { x: 298, y: 320, width: 40, height: 40, answer: "OK" }
+        ]
     }
 
-    document.addEventListener('DOMContentLoaded', SetupCanvas);
+];
 
-    function CreateCoordArray() {
-        let i = 0;
-        let j = 0;
+// let question1 = { x: 4, y: 250, width: 80, height: 40, question: "ThisQuestion", answer: "ThisAnswer"};             
+// let answer1 = { x: 4, y: 320, width: 40, height: 40, answer1:"ThisAnswer"};
+// let answer2 = { x: 100, y: 320, width: 40, height: 40, answer2: "WrongAnswer"};
+// let answer3 = { x: 200, y: 320, width: 40, height: 40, answer3: "WrongAnswer"};
+// let answer4 = { x: 298, y: 320, width: 40, height: 40, answer4: "WrongAnswer"};
+
+let instruct;
+
+document.addEventListener('DOMContentLoaded', DrawCanvas);
+
+function DrawCanvas() {
+    console.log("Draw Canvas");
+    canvas = document.getElementById('PortrisCanvas');
+    context2D = canvas.getContext('2d');
+
+    canvas.width = 685;
+    canvas.height = 728;
+
+    context2D.scale(2, 2);    
+    context2D.fillStyle = 'green';
+    context2D.fillRect(0, 0, canvas.width, canvas.height);
+
+    context2D.strokeStyle = 'yellow';
+    context2D.strokeRect(1, 1, 340, 362);
+
+    document.addEventListener('keydown', KeyMoveShape);
+    
+    Buttons();  
         
-        //This builds the Coordinates Array.
-        for (let y = 9; y <= 446; y += 23) {                    //446 px
-            for (let x = 11; x <= 264; x += 23) {               //264 px
-                coordinateArray[i][j] = new Coordinates(x, y);
-                i++;
-            }
-            j++;
-            i = 0;
-        }
-    }
+}
 
-    function SetupCanvas() {
-        canvas = document.getElementById('tetrisCanvas');
-        ctx = canvas.getContext('2d');
-        canvas.width = 936;                                 //590 px
-        canvas.height = 956;                                //580 px
+function Buttons(){     // Need to figure out how to make the buttons reapear and start the game over.
 
-        ctx.scale(2, 2);                                    //zooms and makes things bigger
+
+    //let startButton = document.getElementById("btn");
+
+    // let button = {x: 150, y: 150, width: 60, height: 30};
+    // context2D.fillStyle = "yellow";
+    // context2D.fillRect(button.x,button.y,button.width,button.height); 
+    // context2D.fillStyle = "black";
+    // context2D.textAlign = "middle";    
+    // context2D.font = "16px Arial";
+    // context2D.fillText("Start Game", button.x + 15, button.y + 15, 30);
+
+    // canvas.addEventListener('click', function(event) {    
+    //     let button = canvas.getBoundingClientRect(button);
+    //     const x = event.clientX - button.left;
+    //     const y = event.clientY - button.top;
+
+    //     if (x >= button.x) {   //(x >= 0 && x <= 200 && y >= 0 && y <= 100)   
+    //         console.log('Button clicked!');
+    // }
+    // });
+    
+    let Button = document.getElementById("Button");       
+    if(!gameOver) {
+        Button.addEventListener("click", function () {
+            Button.style.display = "none";
+            Question();
+            Answer();
+            Start();
+
+        });
+    } 
+    Button.removeEventListener("click", function (){
+        Start();
+    });
+
+    // if (gameOver === true){                      // starts game over.
+    //     console.log(" ** gameOver **");        
+    //     Button.style.display = "block";
+    //     Button.innerText = "Try Again";        
+    //     Button.addEventListener("click", function () {            
+    //         Button.style.display = "none";             
+    //         Question();
+    //         Answer();  
+    //         Start();                   
+    //     });        
+    // }
+
+    // if (gameOver === true){                      // Reports to the home page.
+    //     Button.style.display = "block";
+    //     Button.innerText = "Report Home";
+    //     Button.addEventListener("click", function(){
+    //         window.location.replace("../home.html");
+    //     })
+    // }
+   
+}
+
+function Question() {
+    currentQuestion = questions[questionCount];
+    context2D.fillStyle = "blue";
+    context2D.fillRect(currentQuestion.x, currentQuestion.y, currentQuestion.width, currentQuestion.height); 
+    
+    context2D.fillStyle = "black";
+    context2D.textAlign = "middle";    
+    context2D.font = "16px Arial";
+    context2D.fillText(currentQuestion.question, currentQuestion.x + 1, currentQuestion.y + 30, 39);    
+    
+    // context2D.fillStyle = "blue";
+    // context2D.fillRect(question1.x,question1.y, question1.width, question1.height); 
+    
+    // context2D.fillStyle = "black";
+    // context2D.textAlign = "middle";    
+    // context2D.font = "16px Arial";
+    // context2D.fillText(question1.question, question1.x + 1, question1.y + 30, 39); 
         
-        ctx.fillStyle = 'white';                            //canvas background fill after the block moves down
-        ctx.fillRect(0, 0, canvas.width, canvas.height);    //canvas top end color the erases as block moves down
+}
 
-        ctx.strokeStyle = 'black';                          // font and color for the following and black border around gameboard
-        ctx.strokeRect(8, 8, 280, 462);                     // 1,1,293,288 positioning of the black border
+function Answer() {  
+    currentAnswers = questions[questionCount].answers;
+    for (let i = 0; i < currentAnswers.length; i++) {        
+        context2D.fillStyle = "yellow";
+        context2D.fillRect(currentAnswers[i].x, currentAnswers[i].y, currentAnswers[i].width, currentAnswers[i].height);
+        context2D.fillStyle = "black";
+        context2D.textAlign = "middle";
+        context2D.font = "16px Arial";
+        context2D.fillText(currentAnswers[i].answer, currentAnswers[i].x + 1, currentAnswers[i].y + 30, 39);
+    } 
+    
+    // context2D.fillStyle = "yellow";
+    // //context2D.fillRect(answer1.x,answer1.y, answer1.width, answer1.height);
+    // //context2D.fillRect(answer1.wrAnsX, answer1.wrAnsY, answer1.wrAnswidth, answer1.wrAnsheight);    
+    // context2D.fillRect(answer1.x, answer1.y, answer1.width, answer1.height);
+    // context2D.fillRect(answer2.x, answer2.y, answer2.width, answer2.height);
+    // context2D.fillRect(answer3.x, answer3.y, answer3.width, answer3.height);
+    // context2D.fillRect(answer4.x, answer4.y, answer4.width, answer4.height);
+    // context2D.fillStyle = "black";
+    // context2D.textAlign = "middle";    
+    // context2D.font = "16px Arial";
+    // //context2D.fillText(answer1.answer, answer1.x + 1, answer1.y + 30, 39);
+    // //context2D.fillText(answer1.incorrect, answer1.wrAnsX + 1, answer1.wrAnsY + 30, 39);    
+    // context2D.fillText(answer1.answer1, answer1.x + 1, answer1.y + 30, 39);
+    // context2D.fillText(answer2.answer2, answer2.x + 1, answer2.y + 30, 39);
+    // context2D.fillText(answer3.answer3, answer3.x + 1, answer3.y + 30, 39);
+    // context2D.fillText(answer4.answer4, answer4.x + 1, answer4.y + 30, 39);
+}
 
-        ctx.fillStyle = 'black';                            //Score color and level color
-        ctx.font = '21px Arial';
-        ctx.fillText("SCORE", 300, 98);
-        ctx.strokeRect(300, 107, 161, 24);
-        ctx.fillText(score.toString(), 310, 127);
+function Delete(){
+    context2D.fillStyle = "green";
+    context2D.fillRect(currentQuestion.x, currentQuestion.y, currentQuestion.width, currentQuestion.height);
+    context2D.fillStyle = "green";
+    context2D.fillText(currentQuestion.question, currentQuestion.x + 1, currentQuestion.y + 30, 39);
+    
+    // context2D.fillStyle = "green";
+    // context2D.fillText(question1.question, question1.x + 1, question1.y + 30, 39);
+}
 
-        ctx.fillText("LEVEL", 300, 157);                    //Level and black box
-        ctx.strokeRect(300, 171, 161, 24);
-        ctx.fillText(level.toString(), 310, 190);
+function KeyMoveShape(key){
+    if(!gameOver) {
+        if (key.keyCode === 83) {           
+            WordCollision();
+            direction = DIRECTION.DOWN;
+            Delete();
+            currentQuestion.y++;
+            Question();
+        }
 
-        ctx.fillText("WIN / LOSE", 300, 221);               // Playing or Game Over
-        ctx.fillText(winOrLose, 310, 261);
-        ctx.strokeRect(300, 232, 161, 95);
+        if (key.keyCode === 68) {            
+            HorizontalCollision();
+            WordCollision();
+            direction = DIRECTION.RIGHT;
+            Delete();
+            currentQuestion.x++;
+            Question();
+        }
 
-        document.addEventListener('keydown', HandleKeyPress);
-        CreateTetrominos();                                 // Creates array and pushes block into it
-        CreateTetromino();                                  // selects a random tetromino
+        if (key.keyCode === 65) {            
+            HorizontalCollision();
+            WordCollision();
+            direction = DIRECTION.LEFT;
+            Delete();
+            currentQuestion.x--;
+            Question();
+        }
+    }   
+}
 
-        CreateCoordArray();                                 // Creates the coord array
-        //BaseBlocks();
-        DrawTetromino();                                    // Draw the actual tetromino
+function HorizontalCollision() {
+    let leftWall = 3;
+    let rightWall = 348;
+
+    if (currentQuestion.x <= leftWall) {
+        console.log("Colliding left");
+        Delete();
+        currentQuestion.x++;
+
+    } else if (currentQuestion.x + 60 >= rightWall) {
+        console.log("collision right");
+        Delete();
+        currentQuestion.x--;
     }
 
-    function BaseBlocks(){
+}
 
-        for(let i = 0; i < baseTetromino.length; i++){
-            let xb = baseTetromino[i][0] + bottomX;
-            let yb = baseTetromino[i][1] + bottomY;
-            gameBoardArray[xb][yb] = 1;
-            let coorX = coordinateArray[xb][yb].xb;
-            let coorY = coordinateArray[xb][yb].yb;
-            ctx.fillStyle = curTetrominoColor;
-            ctx.fillRect(coorX, coorY, 23,23);
-            
+function WordCollision() {    
+    console.log("wordCollision");   
+    let answer; 
+    let bottomFrame = 360; 
+
+    if(currentQuestion.y + currentQuestion.height > bottomFrame) {
+        NextQuestion();
+    } else {
+        for (let i = 0; i < currentAnswers.length; i++) {
+            if (currentQuestion.x < currentAnswers[i].x + currentAnswers[i].width && currentQuestion.x + currentQuestion.width > currentAnswers[i].x && currentQuestion.y < currentAnswers[i].y + currentAnswers[i].height && currentQuestion.y + currentQuestion.height > currentAnswers[i].y) {
+                answer = currentAnswers[i].answer;
+                currentQuestion.y--;
+                QandACheck(currentQuestion, answer);
+            }         
         }
     }
+    
+    
+    // if (question1.x < answer1.x + answer1.width && question1.x + question1.width > answer1.x && question1.y < answer1.y + answer1.height && question1.y + question1.height > answer1.y) {
+    //     console.log("collision ANSWER 1 ");
+    //     question1.y--;
+    //     QandACheck();
+    // } else {
+    //     Delete();
+    //     //question1.y++;
+    //     Question();
+    // }
 
-    function DrawTetromino() {
+    // if (question1.x < question1.ax + question1.awidth && question1.x + question1.width > question1.ax && question1.y < question1.ay + question1.aheight && question1.y + question1.height > question1.ay) {
+    //     console.log("collision THISANSWER");
+    //     question1.y--;
+    //     QandACheck();
+    // } else {
+    //     Delete();
+    //     //question1.y++;
+    //     Question();
+    // }
+
+    // if (question1.x < answer1.wrAnsX + answer1.wrAnswidth && question1.x + question1.width > answer1.wrAnsX && question1.y < answer1.wrAnsY + answer1.wrAnsheight && question1.y + question1.height > answer1.wrAnsY) {
+    //     console.log("collision WrongAnswer");
+    //     question1.y--;
+    //     QandACheck();
+    // } else {
+    //     Delete();
+    //     //question1.y++;
+    //     Question();
+    // }
+
+    // if (question1.x < answer2.x + answer2.width && question1.x + question1.width > answer2.x && question1.y < answer2.y + answer2.height && question1.y + question1.height > answer2.y) {
+    //     console.log("collision ANSWER 2 ");
+    //     question1.y--;
+    //     QandACheck();
+    // } else {
+    //     Delete();
+    //     //question1.y++;
+    //     Question();
+    // }
+
+    // if (question1.x + question1.w >= answer1.x && question1.x <= answer1.x + answer1.w && question1.y + question1.h >= answer1.y && question1.y <= answer1.y + answer1.h) {
         
-        for (let i = 0; i < curTetromino.length; i++) {
-            let x = curTetromino[i][0] + startX;
-            let y = curTetromino[i][1] + startY;
-            gameBoardArray[x][y] = 1;
-            let coorX = coordinateArray[x][y].x;
-            let coorY = coordinateArray[x][y].y;
-            ctx.fillStyle = curTetrominoColor;
-            ctx.fillRect(coorX, coorY, 23,23); //tetromino square sizes 23,23
-        }
-    }
+    //     console.log("collision THIS ANSWER");    
+    // }else{
+    //     console.log("NONE");
+    //     Delete();
+    //     question1.y++;
+    //     Question();
+    // }
+}
 
-    function HandleKeyPress(key) {
-        if (winOrLose != "Game Over") {
-            if (key.keyCode === 65) {
-                direction = DIRECTION.LEFT;
-                if (!HittingTheWall() && !CheckForHorizontalCollision()) {
-                    DeleteTetromino();
-                    startX--;
-                    DrawTetromino();
-                }
+function QandACheck(currentQuestion, answer){        
+    if (currentQuestion.answer === answer) {
+        score += 5;
+        console.log("MATCH");        
+        document.getElementById('current-score').innerHTML = score;              
+    } else {
+        console.log("No Match");        
+    }   
+    NextQuestion();
+}
 
-            } else if (key.keyCode === 68) {
-                direction = DIRECTION.RIGHT;
-                if (!HittingTheWall() && !CheckForHorizontalCollision()) {
-                    DeleteTetromino();
-                    startX++;
-                    DrawTetromino();
-                }
+// function ResetGame(){
+//     console.log("game Reset");
+//     context2D.clearRect(0, 0, canvas.width, canvas.height);
+//     DrawCanvas();
+//     score = 0;
+//     gameOver = false;
+//     questionCount = 0;   
+// }
 
-            } else if (key.keyCode === 83) {
-                MoveTetrominoDown();
-            }
-        }
-    }
+function GameOver(){
+    context2D.fillStyle = "black";
+    context2D.textAlign = "middle";    
+    context2D.font = "16px Arial";
+    context2D.fillText("Game Over", 150, 100, 50, 30);    
+    Buttons();
+}
 
-    function MoveTetrominoDown() {
-        direction = DIRECTION.DOWN;
-        if (!CheckForVerticalCollision()) {
-            DeleteTetromino();
-            startY++;
-            DrawTetromino();
-        }
-    }
+function NextQuestion(){      
+    if (questionCount < questions.length - 1) {
+        Delete();
+        questionCount++;
+        Question();
+        Answer();
+    }else{
+        console.log("gameover");  
+        gameOver = true; 
+        console.log(gameOver);          
+        GameOver();    
+    }   
+}
 
-    function DeleteTetromino() {
-        for (let i = 0; i < curTetromino.length; i++) {
-            let x = curTetromino[i][0] + startX;
-            let y = curTetromino[i][1] + startY;
-            gameBoardArray[x][y] = 0;
-            let coorX = coordinateArray[x][y].x;
-            let coorY = coordinateArray[x][y].y;
-            ctx.fillStyle = 'white';
-            ctx.fillRect(coorX, coorY, 23,23);
-        }
-    }
-
-    function CreateTetrominos() {
-        tetrominos.push([[0, 0], [1, 0], [0, 1], [1, 1]]);
-
-
-    }
-
-    function CreateTetromino() {
-        let randomTetromino = Math.floor(Math.random() * tetrominos.length);
-        curTetromino = tetrominos[randomTetromino];
-        curTetrominoColor = tetrominoColors[randomTetromino];
-    }
-
-    function HittingTheWall() {
-        for (let i = 0; i < curTetromino.length; i++) {
-            let newX = curTetromino[i][0] + startX;
-            if (newX <= 0 && direction === DIRECTION.LEFT) {
-                return true;
-
-            } else if (newX >= 11 && direction === DIRECTION.RIGHT) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function CheckForVerticalCollision() {
-        let tetrominoCopy = curTetromino;
-        let collision = false;
-        for (let i = 0; i < tetrominoCopy.length; i++) {
-            let square = tetrominoCopy[i];
-            let x = square[0] + startX;
-            let y = square[1] + startY;
-            if (direction === DIRECTION.DOWN) {
-                y++;
-            }
-            if (typeof stoppedShapeArray[x][y + 1] === 'string') {
-                DeleteTetromino();
-                startY++;
-                DrawTetromino();
-                collision = true;
-                break;
-            }
-            if (y >= 20) {
-                collision = true;
-                break;
-            }
+function Start(){
+    window.setInterval(function(){        
+        if (!gameOver) {
+            WordCollision();
+            Delete();
+            currentQuestion.y++;
+            Question();
+        } 
+    }, 5);
+}
 
 
-        }
-        if (collision) {
-            if (startY <= 2) {
-                winOrLose = "Game Over";
-                ctx.fillStyle = 'white';
-                ctx.fillRect(310, 242, 140, 30);
-                ctx.fillStyle = 'black';
-                ctx.fillText(winOrLose, 310, 261);
-            } else {
-                for (let i = 0; i < tetrominoCopy.length; i++) {
-                    let square = tetrominoCopy[i];
-                    let x = square[0] + startX;
-                    let y = square[1] + startY;
-                    stoppedShapeArray[x][y] = curTetrominoColor;
-                }
-                CheckForCompletedRows();
-                CreateTetromino();
-                direction = DIRECTION.IDLE;
-                startX = 4;
-                startY = 0;
-                DrawTetromino();
-            }
-        }
 
-    }
 
-    function CheckForHorizontalCollision() {
-        var tetrominoCopy = curTetromino;
-        var collision = false;
-        for (var i = 0; i < tetrominoCopy.length; i++) {
-            var square = tetrominoCopy[i];
-            var x = square[0] + startX;
-            var y = square[1] + startY;
-            if (direction == DIRECTION.LEFT) {
-                x--;
-            } else if (direction == DIRECTION.RIGHT) {
-                x++;
-            }
-            var stoppedShapeVal = stoppedShapeArray[x][y];
-            if (typeof stoppedShapeVal === 'string') {
-                collision = true;
-                break;
-            }
 
-        }
-        return collision;
-    }
 
-    function CheckForCompletedRows() {
-        let rowsToDelete = 0;
-        let startOfDeletion = 0;
-        for (let y = 0; y < gBArrayHeight; y++) {
-            let completed = true;
-            for (let x = 0; x < gBArrayWidth; x++) {
-                let square = stoppedShapeArray[x][y];
-                if (square === 0 || (typeof square === 'undefined')) {
-                    completed = false;
-                    break;
-                }
-            }
-            if (completed) {
-                if (startOfDeletion === 0) startOfDeletion = y;
-                rowsToDelete++;
-                for (let i = 0; i < gBArrayWidth; i++) {
-                    stoppedShapeArray[i][y] = 0;
-                    gameBoardArray[i][y] = 0;
-                    let coorX = coordinateArray[i][y].x;
-                    let coorY = coordinateArray[i][y].y;
-                    ctx.fillStyle = 'white';
-                    ctx.fillRect(coorX, coorY, 23,23);
-                }
-            }
-        }
-        if (rowsToDelete > 0) {
-            score += 5;
-            ctx.fillStyle = 'white';
-            ctx.fillRect(310, 109, 140, 19);
-            ctx.fillStyle = 'black';
-            document.getElementById('current-score').innerHTML = score;
+
+
+
+
+
+
+
+
+
+
+    // let tetrisCanvas;
+    // let context;
+    // let gBArrayHeight = 20;
+    // let gBArrayWidth = 12;
+    // let topX = 4;
+    // let topY = 0;
+    // let presentTetromino = [[1, 0], [0, 1], [1, 1], [2, 1]];
+    // let blockColorArray = ["orange"];
+    // let blockColor;
+
+    // //Create gameboard array so we know where other squares are
+    // let gameBoardArray = [...Array(gBArrayHeight)].map(e => Array(gBArrayWidth).fill(0));
+
+    // // Used as a look up table where each value in the array
+    // // contains the x & y position we can use to draw the
+    // // box on the canvas
+    // let coordinateArray = [...Array(gBArrayHeight)].map(e => Array(gBArrayWidth).fill(0));
+
+    // // Array for storing stopped shapes
+    // // It will hold colors when a shape stops and is added
+    // let stoppedShapeArray = [...Array(gBArrayHeight)].map(e => Array(gBArrayWidth).fill(0));
+    
+    // //let baseTetromino = [[1, 0], [0, 1], [1, 1], [2, 1]];
+    // let blockTetrominos = [];
+    // let DIRECTION = {
+    //     IDLE: 0,
+    //     DOWN: 1,
+    //     LEFT: 2,
+    //     RIGHT: 3
+    // };
+
+    // let direction;
+
+    // class Coordinates{
+    //     constructor(x, y){
+    //         this.x = x;
+    //         this.y = y;
+    //     }
+    // }
+    // document.addEventListener('DOMContentLoaded', DrawCanvas);
+    
+    // function CreateCoordArray() {
+    //     let i = 0;
+    //     let j = 0;
+        
+    //     //This builds the Coordinates Array.
+    //     for (let y = 9; y <= 446; y += 23) {                    //446 px
+    //         for (let x = 11; x <= 264; x += 23) {               //264 px
+    //             coordinateArray[i][j] = new Coordinates(x, y);
+    //             i++;
+    //         }
+    //         j++;
+    //         i = 0;
+    //     }
+    // }
+    // /*Canvas building funtion*/
+    // function DrawCanvas(){
+    //     tetrisCanvas = document.getElementById('tetrisCanvas');
+    //     context = tetrisCanvas.getContext('2d');
+    //     tetrisCanvas.width = 936;
+    //     tetrisCanvas.height = 956;
+       
+    //     context.scale(2, 2);
+    //     context.fillStyle = 'black';
+    //     context.fillRect(0, 0, tetrisCanvas.width, tetrisCanvas.height);
+    //     context.strokeStyle = 'yellow';
+    //     context.strokeRect(8, 8, 280, 462);
+
+    //     document.addEventListener('keydown', HandleKeyPress);
+    //     CreateTetromino();
+    //     CreateCoordArray()
+    //     CreateTetrominos();
+    //     DrawTetromino();
+    // }
+    
+    
+    // function CreateTetrominos() {
+    //     blockTetrominos.push([[0, 0], [1, 0], [0, 1], [1, 1]]);
+    // }
+
+    // function DrawTetromino() {
+        
+    //     for (let i = 0; i < presentTetromino.length; i++) {
+    //         let x = presentTetromino[i][0] + topX;
+    //         let y = presentTetromino[i][1] + topY;            
+    //         gameBoardArray[x][y] = 1;
+    //         let coorX = coordinateArray[x][y].x;
+    //         let coorY = coordinateArray[x][y].y;
+    //         context.fillStyle = blockColor;
+    //         context.fillRect(coorX, coorY, 21,21); //tetromino square sizes 23,23
+    //     }
+    // }
+    
+    // function HandleKeyPress(key){
+    //     if(key.keyCode === 65){
+    //         direction = DIRECTION.LEFT;
+    //         deleteTetromino();
+    //         topX--;
+    //         DrawTetromino();
+        
+    //     }else if(key.keyCode === 68){
+    //         direction = DIRECTION.RIGHT;
+    //         deleteTetromino();
+    //         topX++;
+    //         DrawTetromino();
+        
+    //     }else if(key.keyCode === 68){
+    //         direction = DIRECTION.DOWN;
+    //         deleteTetromino();
+    //         topY++;
+    //         DrawTetromino();
+    //     }
+    // }
+
+    // function DeleteTetromino(){
+    //     for(let i = 0; i < presentTetromino.length; i++){
+    //         let x = presentTetromino[i][0] + topX;
+    //         let y = presentTetromino[i][0] + topY;
+    //         gameBoardArray[x][y] = 0;
+    //         let coorX = coordinateArray[x][y].x;
+    //         let coorY = coordinateArray[x][y].y;
+    //         context.fillStyle = 'black';
+    //         context.fillRect(coorX, CoorY, 21,21);
+    //     }
+    // }
+
+    // function CreateTetromino(){
+    //     let randomTetromino = Math.floor(Math.random() * blockTetrominos.length);
+    //     presentTetromino = blockTetrominos[randomTetromino];
+    //     blockColor = blockColorArray[randomTetromino];
+    // }
+
+
+
+
+    // let canvas;
+    // let ctx;
+    // let gBArrayHeight = 20;
+    // let gBArrayWidth = 12;
+    // let startX = 0;         //change the block position here so blocks will continue to drop.
+    // let startY = 18;
+
+    // let bottomX = 0;
+    // let bottomY = 18;
+    
+    // let score = 0;
+    // let level = 1;
+    // let winOrLose = "Playing";
+
+    // let coordinateArray = [...Array(gBArrayHeight)].map(e => Array(gBArrayWidth).fill(0));    
+    // let curTetromino = [[1, 0], [0, 1], [1, 1], [2, 1]];
+    // let baseTetromino = [[1, 0], [0, 1], [1, 1], [2, 1]];
+    // let tetrominos = [];
+    // let tetrominoColors = ['orange', 'blue', 'red'];
+    // let curTetrominoColor;
+    // let gameBoardArray = [...Array(gBArrayHeight)].map(e => Array(gBArrayWidth).fill(0));
+    // let stoppedShapeArray = [...Array(gBArrayHeight)].map(e => Array(gBArrayWidth).fill(0));
+    // let DIRECTION = {
+    //     IDLE: 0,
+    //     DOWN: 1,
+    //     LEFT: 2,
+    //     RIGHT: 3
+    // };
+    // let direction;
+
+
+    // class Coordinates {
+    //     constructor(x, y) {
+    //         this.x = x;
+    //         this.y = y;
+    //     }
+    // }
+
+    // document.addEventListener('DOMContentLoaded', SetupCanvas);
+
+    // function CreateCoordArray() {
+    //     let i = 0;
+    //     let j = 0;
+        
+    //     //This builds the Coordinates Array.
+    //     for (let y = 9; y <= 446; y += 23) {                    //446 px
+    //         for (let x = 11; x <= 264; x += 23) {               //264 px
+    //             coordinateArray[i][j] = new Coordinates(x, y);
+    //             i++;
+    //         }
+    //         j++;
+    //         i = 0;
+    //     }
+    // }
+
+    // function SetupCanvas() {
+    //     canvas = document.getElementById('tetrisCanvas');
+    //     ctx = canvas.getContext('2d');
+    //     canvas.width = 936;                                 //590 px
+    //     canvas.height = 956;                                //580 px
+
+    //     ctx.scale(2, 2);                                    //zooms and makes things bigger
+        
+    //     ctx.fillStyle = 'white';                            //canvas background fill after the block moves down
+    //     ctx.fillRect(0, 0, canvas.width, canvas.height);    //canvas top end color the erases as block moves down
+
+    //     ctx.strokeStyle = 'black';                          // font and color for the following and black border around gameboard
+    //     ctx.strokeRect(8, 8, 280, 462);                     // 1,1,293,288 positioning of the black border
+
+    //     ctx.fillStyle = 'black';                            //Score color and level color
+    //     ctx.font = '21px Arial';
+    //     ctx.fillText("SCORE", 300, 98);
+    //     ctx.strokeRect(300, 107, 161, 24);
+    //     ctx.fillText(score.toString(), 310, 127);
+
+    //     ctx.fillText("LEVEL", 300, 157);                    //Level and black box
+    //     ctx.strokeRect(300, 171, 161, 24);
+    //     ctx.fillText(level.toString(), 310, 190);
+
+    //     ctx.fillText("WIN / LOSE", 300, 221);               // Playing or Game Over
+    //     ctx.fillText(winOrLose, 310, 261);
+    //     ctx.strokeRect(300, 232, 161, 95);
+
+    //     document.addEventListener('keydown', HandleKeyPress);
+    //     CreateTetrominos();                                 // Creates array and pushes block into it
+    //     CreateTetromino();                                  // selects a random tetromino
+
+    //     CreateCoordArray();                                 // Creates the coord array
+    //     //BaseBlocks();
+    //     DrawTetromino();                                    // Draw the actual tetromino
+    // }
+
+    // function BaseBlocks(){
+
+    //     for(let i = 0; i < baseTetromino.length; i++){
+    //         let x = baseTetromino[i][0] + bottomX;
+    //         let y = baseTetromino[i][1] + bottomY;
+    //         gameBoardArray[x][y] = 1;
+    //         let coorX = coordinateArray[x][y].x;
+    //         let coorY = coordinateArray[x][y].y;
+    //         ctx.fillStyle = curTetrominoColor;
+    //         ctx.fillRect(coorX, coorY, 23,23);
             
-            //ctx.fillText(score.toString(), 310, 127);
-            MoveAllRowsDown(rowsToDelete, startOfDeletion);
+    //     }
+    // }
+
+    // function DrawTetromino() {
+        
+    //     for (let i = 0; i < curTetromino.length; i++) {
+    //         let x = curTetromino[i][0] + startX;
+    //         let y = curTetromino[i][1] + startY;
+    //         gameBoardArray[x][y] = 1;
+    //         let coorX = coordinateArray[x][y].x;
+    //         let coorY = coordinateArray[x][y].y;
+    //         ctx.fillStyle = curTetrominoColor;
+    //         ctx.fillRect(coorX, coorY, 22,22); //tetromino square sizes 23,23
             
-        }
-    }
+    //     }
+    // }
 
-    function MoveAllRowsDown(rowsToDelete, startOfDeletion) {
-        for (var i = startOfDeletion - 1; i >= 0; i--) {
-            for (var x = 0; x < gBArrayWidth; x++) {
-                var y2 = i + rowsToDelete;
-                var square = stoppedShapeArray[x][i];
-                var nextSquare = stoppedShapeArray[x][y2];
-                if (typeof square === 'string') {
-                    nextSquare = square;
-                    gameBoardArray[x][y2] = 1;
-                    stoppedShapeArray[x][y2] = square;
-                    let coorX = coordinateArray[x][y2].x;
-                    let coorY = coordinateArray[x][y2].y;
-                    ctx.fillStyle = nextSquare;
-                    ctx.fillRect(coorX, coorY, 23,23);
-                    square = 0;
-                    gameBoardArray[x][i] = 0;
-                    stoppedShapeArray[x][i] = 0;
-                    coorX = coordinateArray[x][i].x;
-                    coorY = coordinateArray[x][i].y;
-                    ctx.fillStyle = 'white';
-                    ctx.fillRect(coorX, coorY, 23,23);
-                }
-            }
-        }
-    }
+    // function HandleKeyPress(key) {
+    //     if (winOrLose != "Game Over") {
+    //         if (key.keyCode === 65) {
+    //             direction = DIRECTION.LEFT;
+    //             if (!HittingTheWall() && !CheckForHorizontalCollision()) {
+    //                 DeleteTetromino();
+    //                 startX--;
+    //                 DrawTetromino();
+    //             }
 
-    window.setInterval(function(){
-        if(winOrLose != "Game Over"){
-            MoveTetrominoDown();
-        }
-    },100);    
+    //         } else if (key.keyCode === 68) {
+    //             direction = DIRECTION.RIGHT;
+    //             if (!HittingTheWall() && !CheckForHorizontalCollision()) {
+    //                 DeleteTetromino();
+    //                 startX++;
+    //                 DrawTetromino();
+    //             }
+
+    //         } else if (key.keyCode === 83) {
+    //             MoveTetrominoDown();
+    //         }
+    //     }
+    // }
+
+    // function MoveTetrominoDown() {
+    //     direction = DIRECTION.DOWN;
+    //     if (!CheckForVerticalCollision()) {
+    //         DeleteTetromino();
+    //         startY++;
+    //         DrawTetromino();
+    //     }
+    // }
+
+    // function DeleteTetromino() {
+    //     for (let i = 0; i < curTetromino.length; i++) {
+    //         let x = curTetromino[i][0] + startX;
+    //         let y = curTetromino[i][1] + startY;
+    //         gameBoardArray[x][y] = 0;
+    //         let coorX = coordinateArray[x][y].x;
+    //         let coorY = coordinateArray[x][y].y;
+    //         ctx.fillStyle = 'white';
+    //         ctx.fillRect(coorX, coorY, 23,23);
+    //     }
+    // }
+
+    // function CreateTetrominos() {
+    //     tetrominos.push([[0, 0], [1, 0], [0, 1], [1, 1]]);
+    //     tetrominos.push([[1, 0], [0, 1], [1, 1], [2, 1]]);
+
+
+    // }
+
+    // function CreateTetromino() {
+    //     let randomTetromino = Math.floor(Math.random() * tetrominos.length);
+    //     curTetromino = tetrominos[randomTetromino];
+    //     curTetrominoColor = tetrominoColors[randomTetromino];
+    // }
+
+    // function HittingTheWall() {
+    //     for (let i = 0; i < curTetromino.length; i++) {
+    //         let newX = curTetromino[i][0] + startX;
+    //         if (newX <= 0 && direction === DIRECTION.LEFT) {
+    //             return true;
+
+    //         } else if (newX >= 11 && direction === DIRECTION.RIGHT) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
+
+    // //Allows the square to move down.
+    // function CheckForVerticalCollision() {
+    //     let tetrominoCopy = curTetromino;
+    //     let collision = false;
+    //     for (let i = 0; i < tetrominoCopy.length; i++) {
+    //         let square = tetrominoCopy[i];
+    //         let x = square[0] + startX;
+    //         let y = square[1] + startY;
+    //         if (direction === DIRECTION.DOWN) {
+    //             y++;
+    //         }
+    //         if (typeof stoppedShapeArray[x][y + 1] === 'string') {
+    //             DeleteTetromino();
+    //             startY++;
+    //             DrawTetromino();
+    //             collision = true;
+    //             break;
+    //         }
+    //         if (y >= 20) {
+    //             collision = true;
+    //             break;
+    //         }
+
+
+    //     }
+    //     if (collision) {
+    //         if (startY <= 2) {
+    //             winOrLose = "Game Over";
+    //             ctx.fillStyle = 'white';
+    //             ctx.fillRect(310, 242, 140, 30);
+    //             ctx.fillStyle = 'black';
+    //             ctx.fillText(winOrLose, 310, 261);
+    //         } else {
+    //             for (let i = 0; i < tetrominoCopy.length; i++) {
+    //                 let square = tetrominoCopy[i];
+    //                 let x = square[0] + startX;
+    //                 let y = square[1] + startY;
+    //                 stoppedShapeArray[x][y] = curTetrominoColor;
+    //             }
+    //             CheckForCompletedRows();
+    //             CreateTetromino();
+    //             direction = DIRECTION.IDLE;
+    //             startX = 4;
+    //             startY = 0;                
+    //             DrawTetromino();
+    //         }
+    //     }
+
+    // }
+
+    // //Allows the square to moce left and right.
+    // function CheckForHorizontalCollision() {
+    //     var tetrominoCopy = curTetromino;
+    //     var collision = false;
+    //     for (var i = 0; i < tetrominoCopy.length; i++) {
+    //         var square = tetrominoCopy[i];
+    //         var x = square[0] + startX;
+    //         var y = square[1] + startY;
+    //         if (direction == DIRECTION.LEFT) {
+    //             x--;
+    //         } else if (direction == DIRECTION.RIGHT) {
+    //             x++;
+    //         }
+    //         var stoppedShapeVal = stoppedShapeArray[x][y];
+    //         if (typeof stoppedShapeVal === 'string') {
+    //             collision = true;
+    //             break;
+    //         }
+
+    //     }
+    //     return collision;
+    // }
+
+    // function CheckForCompletedRows() {
+    //     let rowsToDelete = 0;
+    //     let startOfDeletion = 0;
+    //     for (let y = 0; y < gBArrayHeight; y++) {
+    //         let completed = true;
+    //         for (let x = 0; x < gBArrayWidth; x++) {
+    //             let square = stoppedShapeArray[x][y];
+    //             if (square === 0 || (typeof square === 'undefined')) {
+    //                 completed = false;
+    //                 break;
+    //             }
+    //         }
+    //         if (completed) {
+    //             if (startOfDeletion === 0) startOfDeletion = y;
+    //             rowsToDelete++;
+    //             for (let i = 0; i < gBArrayWidth; i++) {
+    //                 stoppedShapeArray[i][y] = 0;
+    //                 gameBoardArray[i][y] = 0;
+    //                 let coorX = coordinateArray[i][y].x;
+    //                 let coorY = coordinateArray[i][y].y;
+    //                 ctx.fillStyle = 'white';
+    //                 ctx.fillRect(coorX, coorY, 23,23);
+    //             }
+    //         }
+    //     }
+    //     if (rowsToDelete > 0) {
+    //         score += 5;
+    //         ctx.fillStyle = 'white';
+    //         ctx.fillRect(310, 109, 140, 19);
+    //         ctx.fillStyle = 'black';
+    //         document.getElementById('current-score').innerHTML = score;
+            
+    //         //ctx.fillText(score.toString(), 310, 127);
+    //         MoveAllRowsDown(rowsToDelete, startOfDeletion);
+            
+    //     }
+    // }
+
+    // function MoveAllRowsDown(rowsToDelete, startOfDeletion) {
+    //     for (var i = startOfDeletion - 1; i >= 0; i--) {
+    //         for (var x = 0; x < gBArrayWidth; x++) {
+    //             var y2 = i + rowsToDelete;
+    //             var square = stoppedShapeArray[x][i];
+    //             var nextSquare = stoppedShapeArray[x][y2];
+    //             if (typeof square === 'string') {
+    //                 nextSquare = square;
+    //                 gameBoardArray[x][y2] = 1;
+    //                 stoppedShapeArray[x][y2] = square;
+    //                 let coorX = coordinateArray[x][y2].x;
+    //                 let coorY = coordinateArray[x][y2].y;
+    //                 ctx.fillStyle = nextSquare;
+    //                 ctx.fillRect(coorX, coorY, 23,23);
+    //                 square = 0;
+    //                 gameBoardArray[x][i] = 0;
+    //                 stoppedShapeArray[x][i] = 0;
+    //                 coorX = coordinateArray[x][i].x;
+    //                 coorY = coordinateArray[x][i].y;
+    //                 ctx.fillStyle = 'white';
+    //                 ctx.fillRect(coorX, coorY, 23,23);
+    //             }
+    //         }
+    //     }
+    // }
+
+    // // window.setInterval(function(){
+    // //     if(winOrLose != "Game Over"){
+    // //         MoveTetrominoDown();
+    // //     }
+    // // },1000);    
 
 </script>
 
