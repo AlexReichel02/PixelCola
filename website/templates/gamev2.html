@@ -30,8 +30,8 @@
 <br />
 <p id="instructions">A: LEFT, S: DOWN, D: RIGHT. Match the Protocal to the correct PORT</p>
 <canvas id="PortrisCanvas"></canvas>
-<button id="Button">Start Game</button>
-<!-- <button type="button" class="btn">start game</button> -->
+<button id="startButton">Start Game</button>
+<button id="resetButton" style="display: none;">Play Again</button>
 
 </div>
 </body>
@@ -149,31 +149,34 @@ function Buttons(){     // Need to figure out how to make the buttons reapear an
     // }
     // });
     
-    let Button = document.getElementById("Button");       
+    const startButton = document.getElementById("startButton");  
+    const resetButton = document.getElementById("resetButton");     
     if(!gameOver) {
-        Button.addEventListener("click", function () {
-            Button.style.display = "none";
+        startButton.addEventListener("click", function () {
+            startButton.style.display = "none";
             Question();
             Answer();
             Start();
 
         });
     } 
-    Button.removeEventListener("click", function (){
-        Start();
-    });
+    // startButton.removeEventListener("click", function (){
+    //     Start();
+    // });
 
-    // if (gameOver === true){                      // starts game over.
-    //     console.log(" ** gameOver **");        
-    //     Button.style.display = "block";
-    //     Button.innerText = "Try Again";        
-    //     Button.addEventListener("click", function () {            
-    //         Button.style.display = "none";             
-    //         Question();
-    //         Answer();  
-    //         Start();                   
-    //     });        
-    // }
+    if (gameOver === true){                      // starts game over.
+        console.log(" ** gameOver **");
+        
+        startButton.style.display = "none";        
+        resetButton.style.display = "block";               
+        resetButton.addEventListener("click", function () {            
+            resetButton.style.display = "none";
+            ResetGame();             
+            Question();
+            Answer();  
+            Start();                   
+        });        
+    }
 
     // if (gameOver === true){                      // Reports to the home page.
     //     Button.style.display = "block";
@@ -364,21 +367,24 @@ function QandACheck(currentQuestion, answer){
     if (currentQuestion.answer === answer) {
         score += 5;
         console.log("MATCH");        
-        document.getElementById('current-score').innerHTML = score;              
+        document.getElementById('current-score').innerHTML = score; 
+        if(score > 15){
+            alert("You have enough Points");
+        }             
     } else {
         console.log("No Match");        
     }   
     NextQuestion();
 }
 
-// function ResetGame(){
-//     console.log("game Reset");
-//     context2D.clearRect(0, 0, canvas.width, canvas.height);
-//     DrawCanvas();
-//     score = 0;
-//     gameOver = false;
-//     questionCount = 0;   
-// }
+function ResetGame(){
+    console.log("game Reset");
+    // context2D.clearRect(0, 0, canvas.width, canvas.height);
+    // DrawCanvas();
+    score = 0;
+    gameOver = false;
+    questionCount = 0;   
+}
 
 function GameOver(){
     context2D.fillStyle = "black";
@@ -410,7 +416,7 @@ function Start(){
             currentQuestion.y++;
             Question();
         } 
-    }, 5);
+    }, 20);
 }
 
 

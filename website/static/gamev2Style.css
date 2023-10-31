@@ -10,7 +10,7 @@ body{
     margin-top: 5px;
 }
 
-#Button {
+#startButton, #resetButton {
     font-family: Arial;
     color: red;
     padding: 20px;
