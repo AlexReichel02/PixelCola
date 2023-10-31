@@ -6,11 +6,11 @@ from werkzeug.security import generate_password_hash
 
 class TestLogin(TestCase):
 
-    SQLALCHEMY_DATABASE_URI = "sqlite://"  # Use in-memory SQLite for tests
+    SQLALCHEMY_DATABASE_URI = "sqlite://" 
     TESTING = True
 
     def create_app(self):
-        app = create_app()  # assuming you have a function to create your Flask app
+        app = create_app()  
         app.config['SQLALCHEMY_DATABASE_URI'] = self.SQLALCHEMY_DATABASE_URI
         app.config['TESTING'] = self.TESTING
         return app

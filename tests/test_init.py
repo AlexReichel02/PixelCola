@@ -13,13 +13,10 @@ def test_create_app():
 
 
 def test_create_database():
-    # Mocking path.exists to always return False, so the database creation logic is triggered
     with patch('website.path.exists', return_value=False), \
          patch('website.db.create_all') as mock_create_all:
 
-        create_database(None)  # app argument is not used in your function
-
-        # Assert that db.create_all was called once
+        create_database(None)  
         mock_create_all.assert_called_once()
 
     
