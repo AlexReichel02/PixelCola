@@ -110,7 +110,9 @@ Also, the 2D rendering is stored in the context2D.
 Then the DrawCanvas() function is called.
 */
 document.addEventListener('DOMContentLoaded', function() {
-    
+    canvas = document.getElementById('PortrisCanvas');
+    context2D = canvas.getContext('2d');
+    DrawCanvas();
 });
 
 /* DrawCanvas function displays the canvas, a border, 
