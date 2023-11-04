@@ -147,9 +147,9 @@ function Buttons(){
     const startButton = document.getElementById("startButton");  
     const resetButton = document.getElementById("resetButton");  
         
-    if(!gameOver) {        
+    if(!gameOver) {               
         startButton.addEventListener("click", function () {
-            startButton.style.display = "none";
+            startButton.style.display = "none";            
             Question();
             Answer();
             Start();
@@ -173,7 +173,7 @@ function Buttons(){
 }
 
 /*Displays the question when called.*/
-function Question() {    
+function Question() {        
     currentQuestion = questions[questionCount];    
     context2D.fillStyle = "blue";
     context2D.fillRect(currentQuestion.x, currentQuestion.y, currentQuestion.width, currentQuestion.height);     
@@ -255,7 +255,7 @@ and the answer to be checked to the QandACheck() function.
 Also detects if the questions shape hits the bottom of the gameboard.
 If true, then the nextQuestion() function is called.
 */
-function WordCollision() {        
+function WordCollision() { 
     let answer; 
     let bottomFrame = 360; 
 
@@ -265,7 +265,8 @@ function WordCollision() {
         for (let i = 0; i < currentAnswers.length; i++) {
             if (currentQuestion.x < currentAnswers[i].x + currentAnswers[i].width && currentQuestion.x + currentQuestion.width > currentAnswers[i].x && currentQuestion.y < currentAnswers[i].y + currentAnswers[i].height && currentQuestion.y + currentQuestion.height > currentAnswers[i].y) {
                 answer = currentAnswers[i].answer;
-                currentQuestion.y--;
+                Delete();
+                currentQuestion.y--;                
                 QandACheck(currentQuestion, answer);
             }         
         }
@@ -293,7 +294,7 @@ function QandACheck(currentQuestion, answer){
             document.getElementById('current-level').innerHTML = level;            
             alert(" first New level");
         }       
-    }    
+    }           
     NextQuestion();
 }
 
