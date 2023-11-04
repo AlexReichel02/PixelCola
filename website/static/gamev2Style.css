@@ -1,14 +1,8 @@
 body{
-    text-align: center;
-    background: rgb(158, 255, 174);  
+    text-align: center;    
 }
 
-#tetrisCanvas {
-    /* background: rgb(223, 41, 233); */
-    /* background: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed); */
-    margin-left: 10px;
-    margin-top: 5px;
-}
+
 
 #startButton, #resetButton {
     font-family: Arial;
@@ -24,33 +18,6 @@ body{
     text-align: center;
     background-color: yellow;
 }
-
-/* #replayButton {
-    font-family: Arial;
-    color: red;
-    padding: 20px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-top: -50px;
-    margin-left: -100px;
-    height: 100px;
-    width: 250px;
-    text-align: center;
-    background-color: rgb(63, 22, 245);
-} */
-/* #startButton sb, #gameOverLabel gol {
-    border: 3px solid yellow;
-    color: yellow;
-    padding: 10px;
-    border-radius: 15px;
-    cursor: pointer;
-    display: block;
-    width: 200px;
-    text-align: center;
-    font-size: 2em;
-    display: inline-block;
-} */
 
 #startButton:hover {
     background-color: aquamarine;
