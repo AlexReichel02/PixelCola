@@ -4,47 +4,160 @@
     box-sizing: border-box;
 }
 
+form{
+    color: white;
+    width: 500px;
+    justify-content: center;
+    margin: auto;
+    height: 450px;
+    border:solid #222 2px;
+    margin-top: 200px;
+    padding: 10px;
+    background-color: #333;
+}
+
+
+
+table{
+    color: white;
+    background-color: #555;
+    width: 1100px;
+    border: solid #555 3px;
+    margin: auto;
+    justify-content: center;
+}
+
+p{
+    color: white;
+}
+
 body{
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
-    box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
+    background-image: linear-gradient(to right, #111, #111, #111, #111);
+    color: white;
     min-height: 1000px;
+
+
+    
+
+
 }
 
-area{
-    position: absolute;
-    z-index: 1;
-    opacity: 0.5;
-    background-color: red;
+h1{
+    color: white;
+}
+
+.map{
+    width: 1100px;
+    height: 1000px;
+    position: relative;
+    display: flex;
+    margin: auto;
+
+
+    
+}
+
+.map::before{
+    content: "";
+    background: url("../static/map1.png");
+    background-size: cover;
+    background-position: center ;
+    height: 70%;
+    width: 70%;
+    margin: auto;
+    justify-self: center;
+   
+    
+}
+
+.game1{
+    width: 175px;
+    height: 50px;
+    position: relative;
   
+
+    color: white;
+    text-align: center;
+ margin: auto;
+ position: absolute;
+ margin-left: 150px;
+ margin-top: 175px;
+ animation: pulse 1.5s infinite;
+ border-color: #bf2e26;
+ box-shadow: 0 0 50px #bf4026;
 }
 
 
+.game2{
+    width: 175px;
+    height: 50px;
+    position: absolute;
+   
 
-img {
-    position: relative; /* Ensure the image is a positioned element */
-    z-index: 0; /* Default z-index for the map image */
-    background-color: transparent;
+    color: white;
+    text-align: center;
+ margin: auto;
+    
+ margin-left: 700px;
+ margin-top: 700px;
+ animation: pulse 1.5s infinite;
+ border-color: #bf2e26;
+ box-shadow: 0 0 50px #bf4026;
+ 
 }
+
+.game3{
+    width: 175px;
+    height: 50px;
+    position: absolute;
+   
+   
+    color: white;
+    text-align: center;
+    margin: auto;
+
+    margin-left: 600px;
+    margin-top: 400px;
+    animation: pulse 1.5s infinite;
+    border-color: #bf2e26;
+    box-shadow: 0 0 50px #bf4026;
+   
+    
+}
+
+@keyframes pulse {
+    0% {
+      transform: scale(1); /* Start at normal size */
+    }
+    50% {
+      transform: scale(1.1); /* Scale up to 110% size */
+    }
+    100% {
+      transform: scale(1); /* Return to normal size */
+    }
+  }
+
+
 
 .containerV2{
     
     border-radius: 10px;
     background: #222;
     margin-top: 50px;
-    height: 600px;
+    height: 650px;
     margin: auto;
     border-color: #26bf47;
     box-shadow: 0 0 100px #26bf47;
-	transition: 0.5s;
+	  transition: 0.5s;
     width: 1100px;
 
 }
 
 .banner{
-    padding-top: 20px;
+    
     justify-content: center;
     margin: auto;
     height: 100px;
@@ -52,8 +165,10 @@ img {
     align-content: center;
     text-align: center;
     display: flex;
-    width: 1140px;
+    width: 1000px;
     border-radius: 100px;
+    padding: 10px;
+    border:solid #333 5px;
 }
 
 .banner p{
@@ -180,10 +295,7 @@ img {
     background: #30dd8a;
 }
 
-table{
-    margin: auto;
-    justify-content: center;
-}
+
 
 td{
 padding: 20px;
@@ -191,11 +303,593 @@ padding: 20px;
 
 th{
     padding: 20px;
+    color: white;
+    font-size: 24px;
 }
 
 tr{
     padding: 20px;
+    color: white;
 }
+
+.refresh-word{
+    width: 100px;
+    height: 70px;
+}
+
+.check-word{
+    width: 100px;
+    height: 70px;
+}
+
+.checkForm{
+    margin-top: 0px;
+    padding: 0px;
+    height: 70px;
+}
+
+
+
+@keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .animate {
+    animation: pulse 1s infinite;
+  }
+
+.animation {
+    justify-content: center;
+    margin: auto;
+    width: 500px;
+    height: 60px;
+    background-color: #555;
+    border: solid 2px #333;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    display: none; /* Initially hidden */
+    /* Add animation properties here */
+  }
+
+  .map-p{
+    text-align: center;
+    color:black;
+    justify-self: center;
+    padding: 10px;
+  }
+
+  .greencheck{
+    height: 50px;
+    width: 50px;
+  }
+  
+  .completed{
+      height: 50px;
+      width: 100px;
+      display: flex;
+      justify-content: center;
+      margin: auto;
+  }
+
+  .circle{
+    justify-content: center;
+    margin: auto;
+    width: 1000px; /* Set the width and height to create a circle */
+    height: 1000px;
+    border-radius: 50%; /* Make it a circle */
+    border: solid 3px #34db6c; /* Set the background color of the circle */
+    box-shadow: 0 0 100px #26bf47;
+    background-color: #181818;
+    }
+
+  .game3section{
+    max-width: 1140px;
+    height: fit-content;
+    border: solid #222;
+    background-color: #333;
+    padding: 10px;
+    margin: auto;
+    justify-content: center;
+    text-align: center;
+    border: solid 3px #34db6c; /* Set the background color of the circle */
+    box-shadow: 0 0 100px #26bf47;
+  }
+
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg); /* Start the rotation from 0 degrees */
+    }
+    100% {
+      transform: rotate(360deg); /* End the rotation at 360 degrees (full circle) */
+    }
+  }
+
+  .refresh-word2{
+    width: 100px;
+    height: 70px;
+    border: color solid red;
+}
+
+.check-word2{
+    width: 100px;
+    height: 70px;
+}
+
+.buttons2{
+    width: 100px;
+    height: 100px;
+}
+
+.checkForm2{
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    font-size: 12px;
+   
+}
+
+.details2{
+    font-size: 12px;
+}
+
+.containerV3 {
+    font-size: 16px;
+    background-color: #ffffff;
+    width: 90vw;
+    max-width: 34em;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    padding: 3em;
+    border-radius: 0.6em;
+    box-shadow: 0 1.2em 2.4em rgba(111, 85, 0, 0.25);
+  }
+  #options-container {
+    text-align: center;
+  }
+  #options-container div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  #options-container button {
+    padding: 0.6em 1.2em;
+    border: 3px solid #000000;
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 0.3em;
+    text-transform: capitalize;
+    cursor: pointer;
+  }
+  #options-container button:disabled {
+    border: 3px solid #808080;
+    color: #808080;
+    background-color: #efefef;
+  }
+  #options-container button.active {
+    background-color: #2ecd50;
+    border: 3px solid #000000;
+    color: #fff;
+  }
+  .letter-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6em;
+  }
+  #letter-container button {
+    height: 2.4em;
+    width: 2.4em;
+    border-radius: 0.3em;
+    background-color: #ffffff;
+    cursor: pointer;
+  }
+  
+  #hintContainer {
+    font-size: 24px;
+  }
+  
+  #user-input-section {
+    display: flex;
+    justify-content: center;
+    font-size: 1.8em;
+    margin: 0.6em 0 1.2em 0;
+  }
+  canvas {
+    display: block;
+    margin: auto;
+    border: 10px solid #1fbe2c;
+    border-radius: 10px;
+  }
+  .hide {
+    display: none;
+  }
+  #result-text h2 {
+    font-size: 1.8em;
+    text-align: center;
+  }
+  #result-text p {
+    font-size: 1.25em;
+    margin: 1em 0 2em 0;
+  }
+  #result-text span {
+    font-weight: 600;
+  }
+  #new-game-button {
+    font-size: 1.25em;
+    padding: 0.5em 1em;
+    background-color: #1aac48;
+    border: 3px solid #000000;
+    color: #fff;
+    border-radius: 0.2em;
+    cursor: pointer;
+  }
+  .win-msg {
+    color: #39d78d;
+  }
+  .lose-msg {
+    color: #fe5152;
+  }
+  
+  .imageContainer img{
+    max-width: 400px;
+    max-height: 500px;
+   
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    text-align: center;
+
+}
+
+.modal-content p{
+    color: #000000;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dashes{
+    padding: 5px;
+}
+
+.HangmanSide{
+  width: 1100px;
+  margin: auto;
+  border:solid #555 5px;
+  display: flex;
+}
+
+.HangmanRightSide{
+  width: 500px;
+  margin:auto;
+  border:solid #555 5px;
+  height: fit-content;
+  padding: 10px;
+}
+
+.HangmanLeftSide{
+  width: 500px;
+  margin:auto;
+  border:solid #555 5px;
+  height: fit-content;
+  padding: 10px;
+}
+
+section 
+{
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 2px;
+	flex-wrap: wrap;
+	overflow: hidden;
+  font-family: 'Quicksand', sans-serif;
+}
+section::before 
+{
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(#000,#0f0,#000);
+	animation: animate 5s linear infinite;
+}
+@keyframes animate 
+{
+	0%
+	{
+		transform: translateY(-100%);
+	}
+	100%
+	{
+		transform: translateY(100%);
+	}
+}
+section span 
+{
+	position: relative;
+	display: block;
+	width: calc(6.25vw - 2px);
+	height: calc(6.25vw - 2px);
+	background: #181818;
+	z-index: 2;
+	transition: 1.5s;
+}
+section span:hover 
+{
+	background: #0f0;
+	transition: 0s;
+}
+
+section .BackgroundContainer
+{
+	position: absolute;
+	width: fit-content;
+  height: fit-content;
+  background: #222;  
+	z-index: 3;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 40px;
+	border-radius: 4px;
+	box-shadow: 0 15px 35px rgba(0,0,0,9);
+  
+}
+section .BackgroundContainer .content 
+{
+	position: relative;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 40px;
+}
+section .BackgroundContainer .content h2 
+{
+	font-size: 2em;
+	color: #0f0;
+	text-transform: uppercase;
+}
+section .BackgroundContainer .content .form 
+{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 25px;
+
+}
+section .BackgroundContainer .content .form .inputBox
+{
+	position: relative;
+	width: 100%;
+
+}
+section .BackgroundContainer .content .form .inputBox input 
+{
+	position: relative;
+	width: 400px;
+	background: #333;
+	border: none;
+	outline: none;
+	padding: 25px 10px 7.5px;
+	border-radius: 4px;
+	color: #fff;
+	font-weight: 500;
+	font-size: 1rem;
+
+
+}
+section .BackgroundContainer .content .form .inputBox i 
+{
+	position: absolute;
+	left: 0;
+	padding: 15px 10px;
+	font-style: normal;
+  
+	color: #aaa;
+	transition: 0.5s;
+	pointer-events: none;
+  
+}
+.BackgroundContainer .content .form .inputBox input:focus ~ i,
+.BackgroundContainer .content .form .inputBox input:valid ~ i
+{
+	transform: translateY(-7.5px);
+	font-size: 0.8em;
+	color: #fff;
+  font-size: 1.5rem;
+}
+.BackgroundContainer .content .form .links 
+{
+	position: relative;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+.BackgroundContainer .content .form .links a 
+{
+	color: #fff;
+	text-decoration: none;
+  font-size: 1.5rem;
+}
+.BackgroundContainer .content .form .links a:nth-child(2)
+{
+	color: #0f0;
+	font-weight: 600;
+}
+BackgroundContainer .content .form .inputBox input[type="submit"]
+{
+	padding: 10px;
+	background: #0f0;
+	color: #000;
+	font-weight: 600;
+	font-size: 1.35em;
+	letter-spacing: 0.05em;
+	cursor: pointer;
+}
+input[type="submit"]:active
+{
+	opacity: 0.6;
+}
+
+.tempForm{
+  all: initial;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.alert{
+  z-index: 2;
+}
+
+.homeContainer{
+	position: absolute;
+	width: 1140px;
+  height: fit-content;
+
+	z-index: 3;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 40px;
+	border-radius: 4px;
+	box-shadow: 0 15px 35px rgba(0,0,0,9);
+ 
+}
+
+.homeContainer .content{
+  position: relative;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+  height: fit-content;
+	gap: 40px;
+}
+
+.homeScreen{
+	position: absolute;
+	width: 100vw;
+	height: 1500px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 2px;
+	flex-wrap: wrap;
+	overflow: hidden;
+  font-family: 'Quicksand', sans-serif;
+
+}
+.homeScreen::before 
+{
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(#000,#0f0,#000);
+	animation: animate 5s linear infinite;
+}
+
+.bannerSpan{
+  all: initial;
+  padding: 10px;
+  font-size: 26px;
+  color: white;
+}
+
+
+.HomeAlert{
+  position: absolute;
+  width: 1000px;
+  height: 1000px;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+  margin: auto;
+  justify-self: center;
+  justify-content: center;
+  z-index: 500;
+
+  
+}
+
+.HomeAlertContent {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+
+}
+
+.HomeAlert .close{
+  
+  margin: auto;
+  justify-self: center;
+  font-size: 1.25em;
+  padding: 0.5em 1em;
+  background-color: #1aac48;
+  border: 3px solid #000000;
+  color: #fff;
+  border-radius: 0.2em;
+  cursor: pointer;
+  
+}
+
+.HomeAlert p{
+  color: #000;
+}
+
 
 @media  screen and (max-width: 740px) {
 
@@ -240,6 +934,82 @@ body{
     border-radius: 8px;
     width: calc(50% - 6 px);
     width: 150px;
+}
+
+
+.map{
+    width: 400px;
+   
+    height: 800px;
+    position: relative;
+    
+    margin: auto;
+    border: solid red;
+    
+}
+
+.map::before{
+    content: "";
+    background: url("../static/map1.png");
+    background-size:cover;
+    background-position: center ;
+    height: 50%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index:-1;
+}
+
+.game1{
+    width: 120px;
+    height: 50px;
+    position: relative;
+    background-color: #04befe;
+    font-size: 14px;
+    color: white;
+    text-align: center;
+ margin: auto;
+ position: absolute;
+ margin-left: 50px;
+
+    
+}
+
+
+.game2{
+    width: 100px;
+    
+    position: absolute;
+    background-color: #26bf47;
+
+    color: white;
+    text-align: center;
+ margin: auto;
+    
+margin-left: 300px;
+margin-top: 250px;
+
+}
+
+.game3{
+    width: 100px;
+    height: 50px;
+    position: absolute;
+    background-color: #3f86ed;
+   
+    color: white;
+    text-align: center;
+    margin: auto;
+
+    margin-left: 200px;
+    margin-top: 150px;
+
+
+    
+   
+
+    
 }
 
 
