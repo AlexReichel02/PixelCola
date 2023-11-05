@@ -891,6 +891,19 @@ input[type="submit"]:active
 }
 
 
+
+.instructions{
+  width: 500px;
+  height: 150px;
+  justify-content: center;
+  margin: auto;
+  padding: 10px;
+  background-color: #222;
+  border: solid 2px #333;
+  align-items: center;
+}
+
+
 @media  screen and (max-width: 740px) {
 
 
