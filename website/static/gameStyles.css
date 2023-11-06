@@ -893,8 +893,8 @@ input[type="submit"]:active
 
 
 .instructions{
-  width: 500px;
-  height: 150px;
+  width: 750px;
+  height: 200px;
   justify-content: center;
   margin: auto;
   padding: 10px;
@@ -902,6 +902,31 @@ input[type="submit"]:active
   border: solid 2px #333;
   align-items: center;
 }
+
+.instructions p{
+  font-size: 24px;
+}
+
+
+.accordion-item {
+  margin-bottom: 10px;
+}
+
+.accordion-button {
+  background-color: #f1f1f1;
+  border: none;
+  text-align: left;
+  width: 100%;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.accordion-collapse {
+  display: none;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
 
 
 @media  screen and (max-width: 740px) {

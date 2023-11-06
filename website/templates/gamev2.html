@@ -78,12 +78,15 @@
 </div>
 
 <div class="section">
-    {% if user.level < 1 %} <h5>NOT ENOUGH POINTS!</h5>
-    
+    {% if user.level < 1 %} 
+    <h2>Portris</h2>
     <div class="instructions">
-    <p id="instructions">A: LEFT, S: DOWN, D: RIGHT. Match the Protocal to the correct PORT</p>
-    <button id="startButton">Start Game</button>
+    <p id="instructions">Match the Protocol to the correct Port</p>
+    <p>A : LEFT , S : DOWN ,  D : RIGHT.</p>
+    <div class="buttons">
+    <button class="check-word" id="startButton">Start Game</button>
     <button id="resetButton" style="display: none;">Play Again</button>
+    </div>
     </div>
     <br />
     
