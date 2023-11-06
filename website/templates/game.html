@@ -210,24 +210,6 @@ let words = [
 
   const initTimer = (maxTime) => {
     clearInterval(timer);
-<<<<<<< HEAD
-
-    timer = setInterval(() => {
-      if (maxTime > 0) {
-        maxTime--;
-        // timeText.innerText = maxTime;
-        return (timeText.innerText = maxTime);
-      }
-      let text = { correctWord };
-      messageText.innerText = "Time off " + correctWord + "  was the correct word";
-      //alert("Time off ${correctWord.toUpperCase()} was the correct word");
-      initGame();
-    }, 1000);
-  };
-
-  const initGame = () => {
-    gameStarted = true;
-=======
    
     timer = setInterval(()=>{
         if(maxTime >0){
@@ -249,7 +231,6 @@ function initGame (){
  
     gameStarted=true;
     handleWin();
->>>>>>> d086007f5f17836f20c8c17529ffb261c940d901
     initTimer(30);
     let randomObj = words[Math.floor(Math.random() * words.length)];
     let wordArray = randomObj.word.split("");
@@ -296,14 +277,9 @@ const checkWord = () => {
            // handleWin();
            
             messageText.innerText="Congrats! " + correctWord +" is the correct Word";
-<<<<<<< HEAD
-
-        score.value = 5;
-=======
             
     
             score.value=5;
->>>>>>> d086007f5f17836f20c8c17529ffb261c940d901
 
             $.ajax({
             url: '/update_score',
