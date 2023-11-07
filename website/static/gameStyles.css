@@ -2,7 +2,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
+
+
 
 form{
     color: white;
@@ -21,10 +24,11 @@ form{
 table{
     color: white;
     background-color: #555;
-    width: 1100px;
+    width: 1000px;
     border: solid #555 3px;
     margin: auto;
     justify-content: center;
+  
 }
 
 p{
@@ -267,6 +271,7 @@ h1{
     margin: auto;
     justify-content: center;
     text-align: center;
+    
 
 }
 
@@ -679,6 +684,8 @@ section .BackgroundContainer
 	padding: 40px;
 	border-radius: 4px;
 	box-shadow: 0 15px 35px rgba(0,0,0,9);
+  border-color: #3dbf26;
+  box-shadow: 0 0 50px #63bf26;
   
 }
 section .BackgroundContainer .content 
@@ -690,6 +697,7 @@ section .BackgroundContainer .content
 	align-items: center;
 	flex-direction: column;
 	gap: 40px;
+  
 }
 section .BackgroundContainer .content h2 
 {
@@ -927,6 +935,78 @@ input[type="submit"]:active
   background-color: #f9f9f9;
 }
 
+.NoGameSection{
+  width: 500px;
+  height: 500px;
+  margin: auto;
+  padding: 20px;
+  justify-content: center;
+  background-color: #333;
+  border: solid 2px #222;
+  color: white;
+  font-size: 30px;
+  animation: pulse 1.5s infinite;
+  border-color: #3dbf26;
+  box-shadow: 0 0 50px #63bf26;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+/* Basic styles for the navbar */
+.navBar {
+  background-color: #000306;
+  color: white;
+  padding: 10px 20px;
+}
+
+.container6 {
+  
+  margin: auto;
+
+  
+
+
+}
+
+.navBar-brand {
+  font-size: 34px;
+  text-decoration: none;
+  color: white;
+ 
+}
+
+.navBar-brand:hover{
+  color: rgb(52, 173, 43);
+}
+
+.navBar-menu {
+  display: flex;
+  align-items: center;
+
+}
+
+.navBar-nav {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-Item {
+  margin-right: 20px;
+}
+
+.nav-Link {
+  text-decoration: none;
+  color: green;
+  font-weight: bold;
+  font-size: 22px;
+  transition: color 0.3s ease;
+ 
+}
+
+.nav-Link:hover {
+  color: #fff; /* Change color on hover */
+}
 
 
 @media  screen and (max-width: 740px) {
