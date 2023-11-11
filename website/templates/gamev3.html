@@ -12,7 +12,7 @@
   />
   <link rel="stylesheet" href="../static/gameStyles.css">
   <!-- Stylesheet -->
-
+  <title>{% block title %}Hangman{% endblock %}</title>
   </head>
 
 
@@ -68,10 +68,14 @@
 <br />
 <br />
 
-{% if user.level < 1 %}
+{% if user.level <= 2 %}
 <div class="game3section">
   <div class="container">
-    <div id="options-container"></div>
+    <div class="optionsContainer" id="options-container"></div>
+    <br />
+    <div class="animation">
+      <p>You can Advance or keep playing</p>
+    </div>
     <br />
     <div class="HangmanSide">
 
@@ -84,9 +88,6 @@
 
     <div class="HangmanRightSide">
     <div id="user-input-section"></div>
-    <div class="animation">
-      <p>You can Advance or keep playing</p>
-    </div>
     <canvas id="canvas"></canvas>
     </div>
     </div>
@@ -108,7 +109,7 @@
 <div class="NoGameSection">
   <br/>
   <br />
-  <br />
+
 
   <p>You do not have enough points to play this game at the moment</p>
   <p>Try again after gaining enough points</p>
@@ -310,7 +311,7 @@ let chosenWord = "";
 
 //Display option buttons
 const displayOptions = () => {
-  optionsContainer.innerHTML += `<h3>Please Select An Option Between The Various Forms Of Security</h3>`;
+  optionsContainer.innerHTML += `<h3>Please Select An Option Between The Various Forms Of Security</h3><br />`;
   let buttonCon = document.createElement("div");
   for (let value in options) {
     buttonCon.innerHTML += `<button class="options" onclick="generateWord('${value}')">${value}</button>`;

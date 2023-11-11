@@ -7,6 +7,21 @@ from flask_login import login_user, login_required, logout_user, current_user
 
 auth = Blueprint('auth', __name__)
 
+@auth.route('/', methods=['GET', 'POST'])
+@login_required
+def home():
+    if request.method == 'POST': 
+        note = request.form.get('note')#Gets the note from the HTML 
+
+        if len(note) < 1:
+            flash('Note is too short!', category='error') 
+        else:
+            new_note = Note(data=note, user_id=current_user.id)  #providing the schema for the note 
+            db.session.add(new_note) #adding the note to the database 
+            db.session.commit()
+            flash('Note added!', category='success')
+
+    return render_template("home.html", user=current_user)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -19,7 +34,7 @@ def login():
             if check_password_hash(user.password, password):
                 flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
-                return redirect(url_for('views.home'))
+                return redirect(url_for('auth.home'))
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
@@ -62,7 +77,7 @@ def sign_up():
             db.session.commit()
             login_user(new_user, remember=True)
             flash('Account created!', category='success')
-            return redirect(url_for('views.home'))
+            return redirect(url_for('auth.home'))
 
     return render_template("sign_up.html", user=current_user)
 
@@ -95,7 +110,6 @@ def update_score():
     return jsonify(score=current_user.score,level=current_user.level)
 
 
-
 @auth.route('/game', methods=['GET', 'POST'])
 @login_required
 def game():
@@ -111,19 +125,6 @@ def gameV2():
 @auth.route('/gameV3', methods=['GET', 'POST'])
 @login_required
 def gameV3():
-    if request.method == 'POST':
-        score1 = request.form.get('score1')
-        score2 = request.form.get('score2')
-        score3 = request.form.get('score3')
-        score4 = request.form.get('score4')
-        score5 = request.form.get('score5')
-
-        print(score1)
-        print(score2)
-        print(score3)
-        print(score4)
-        print(score5)
-
     return render_template("gamev3.html", user=current_user)
 
 @auth.route('/leaderBoard', methods=['GET', 'POST'])
