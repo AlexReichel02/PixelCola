@@ -1,11 +1,73 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %}
-{% block content
-%}
-<link rel="stylesheet" type="text/css" href="../static/gamev2Style.css">
 
+
+<head>
+    <meta charset="utf-8" />
+  
+
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" 
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+    crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+   
+    <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../static/gameStyles.css">
+  <!-- Stylesheet -->
+
+  </head>
+
+
+
+  <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Pixelcola</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        {% if user.is_authenticated %}
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+              </li>
+            
+              <li class="nav-item">
+                <a class="nav-link" href="/game">CyberScramble</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/gameV2">Portris</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/gameV3">HangMan</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/leaderBoard">Leader Board</a>
+              </li> 
+            </ul>
+          {% else %}
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/sign-up">Sign Up</a>
+          </li> 
+        </ul>
+        {% endif %}
+       
+      </div>
+    </div>
+  </nav>
 <br />
 <br />
-
+<br />
 
 <div class="banner" id="banner">
 
@@ -16,27 +78,36 @@
 </div>
 
 <div class="section">
-    {% if user.score < 1 %} <h5>NOT ENOUGH POINTS!</h5>
+    {% if user.level < 1 %} 
+    <h2>Portris</h2>
+    <div class="instructions">
+    <p id="instructions">Match the Protocol to the correct Port</p>
+    <p>A : LEFT , S : DOWN ,  D : RIGHT.</p>
+    <div class="buttons">
+    <button class="check-word" id="startButton">Start Game</button>
+    <button id="resetButton" style="display: none;">Play Again</button>
+    </div>
+    </div>
+    <br />
+    
+    <canvas id="PortrisCanvas"></canvas>
+    
+    
+
+    <br />
+    <br />
+    
     
         {% else %}
         <h5>game!</h5>
         {% endif %}
 
+
+
+
+<br />
 </div>
 
-
-<br />
-<br />
-<br />
-<p id="instructions">A: LEFT, S: DOWN, D: RIGHT. Match the Protocal to the correct PORT</p>
-<canvas id="PortrisCanvas"></canvas>
-<button id="startButton">Start Game</button>
-<button id="resetButton" style="display: none;">Play Again</button>
-
-</div>
-</body>
-
-</html>
 
 <script>
 
@@ -50,50 +121,105 @@ let DIRECTION = {
     UP: 4
 };
 let direction;
-let score = 0;
+
 let gameOver;
-let level = 1;
+
 let questionCount = 0;
 let questionCountReset = 0;
 let currentQuestion;
 let currentAnswers;
+
 const questions = [
     {
-        x: 150, y: 10, width: 50, height: 50, question: "Question : 1", answer: "ANSWER : 1",
+        x: 150, y: 10, width: 50, height: 50, question: "HTTP", answer: "Port 80",
         answers: [
-            { x: 4, y: 320, width: 40, height: 40, answer: "YUPP" },
-            { x: 100, y: 320, width: 40, height: 40, answer: "**" },
-            { x: 200, y: 320, width: 40, height: 40, answer: "YUPPERS" },
-            { x: 298, y: 320, width: 40, height: 40, answer: "ANSWER : 1" }
+            { x: 4, y: 320, width: 50, height: 50, answer: "Port 110" },
+            { x: 100, y: 320, width: 50, height: 50, answer: "Port 25" },
+            { x: 200, y: 320, width: 50, height: 50, answer: "Port 443" },
+            { x: 298, y: 320, width: 50, height: 50, answer: "Port 80" }
         ]
     },
     {
-        x: 150, y: 10, width: 50, height: 50, question: "Question : 2", answer: "ANSWER : 2",
+        x: 150, y: 10, width: 50, height: 50, question: "SMTP", answer: "Port 25",
         answers: [
-            { x: 4, y: 320, width: 40, height: 40, answer: "no Way" },
-            { x: 100, y: 320, width: 40, height: 40, answer: "ANSWER : 2" },
-            { x: 200, y: 320, width: 40, height: 40, answer: "**" },
-            { x: 298, y: 320, width: 40, height: 40, answer: "INCORRECT" }
+            { x: 4, y: 320, width: 50, height: 50, answer: "Port 110" },
+            { x: 100, y: 320, width: 50, height: 50, answer: "Port 25" },
+            { x: 200, y: 320, width: 50, height: 50, answer: "Port 443" },
+            { x: 298, y: 320, width: 50, height: 50, answer: "Port 22" }
         ]
     },
     {
-        x: 150, y: 10, width: 50, height: 50, question: "Question : 3", answer: "ANSWER : 3",
+        x: 150, y: 10, width: 50, height: 50, question: "IMAP", answer: "Port 110",
         answers: [
-            { x: 4, y: 320, width: 40, height: 40, answer: "QQ" },
-            { x: 100, y: 320, width: 40, height: 40, answer: "/|" },
-            { x: 200, y: 320, width: 40, height: 40, answer: "ANSWER : 3" },
-            { x: 298, y: 320, width: 40, height: 40, answer: "maybe" }
+            { x: 4, y: 320, width: 50, height: 50, answer: "Port 22" },
+            { x: 100, y: 320, width: 50, height: 50, answer: "Port 25" },
+            { x: 200, y: 320, width: 50, height: 50, answer: "Port 110" },
+            { x: 298, y: 320, width: 50, height: 50, answer: "Port 80" }
         ]
     },
     {
-        x: 150, y: 10, width: 50, height: 50, question: "Question : 4", answer: "ANSWER : 4",
+        x: 150, y: 10, width: 50, height: 50, question: "SSH", answer: "Port 22",
         answers: [
-            { x: 4, y: 320, width: 40, height: 40, answer: "ANSWER : 4" },
-            { x: 100, y: 320, width: 40, height: 40, answer: "Noth this time" },
-            { x: 200, y: 320, width: 40, height: 40, answer: "<L>" },
-            { x: 298, y: 320, width: 40, height: 40, answer: "OK" }
+            { x: 4, y: 320, width: 50, height: 50, answer: "Port 110" },
+            { x: 100, y: 320, width: 50, height: 50, answer: "Port 25" },
+            { x: 200, y: 320, width: 50, height: 50, answer: "Port 443" },
+            { x: 298, y: 320, width: 50, height: 50, answer: "Port 22" }
         ]
-    }
+    },
+    {
+        x: 150, y: 10, width: 50, height: 50, question: "FTP", answer: "Port 21",
+        answers: [
+            { x: 4, y: 320, width: 50, height: 50, answer: "Port 110" },
+            { x: 100, y: 320, width: 50, height: 50, answer: "Port 25" },
+            { x: 200, y: 320, width: 50, height: 50, answer: "Port 21" },
+            { x: 298, y: 320, width: 50, height: 50, answer: "Port 80" }
+        ]
+    },
+    {
+        x: 150, y: 10, width: 50, height: 50, question: "DNS", answer: "Port 53",
+        answers: [
+            { x: 4, y: 320, width: 50, height: 50, answer: "Port 110" },
+            { x: 100, y: 320, width: 50, height: 50, answer: "Port 25" },
+            { x: 200, y: 320, width: 50, height: 50, answer: "Port 443" },
+            { x: 298, y: 320, width: 50, height: 50, answer: "Port 53" }
+        ]
+    },
+    {
+        x: 150, y: 10, width: 50, height: 50, question: "NTP", answer: "Port 123",
+        answers: [
+            { x: 4, y: 320, width: 50, height: 50, answer: "Port 123" },
+            { x: 100, y: 320, width: 50, height: 50, answer: "Port 25" },
+            { x: 200, y: 320, width: 50, height: 50, answer: "Port 110" },
+            { x: 298, y: 320, width: 50, height: 50, answer: "Port 80" }
+        ]
+    },
+    {
+        x: 150, y: 10, width: 50, height: 50, question: "HTTPS", answer: "Port 443",
+        answers: [
+            { x: 4, y: 320, width: 50, height: 50, answer: "Port 110" },
+            { x: 100, y: 320, width: 50, height: 50, answer: "Port 25" },
+            { x: 200, y: 320, width: 50, height: 50, answer: "Port 443" },
+            { x: 298, y: 320, width: 50, height: 50, answer: "Port 22" }
+        ]
+    },
+    {
+        x: 150, y: 10, width: 50, height: 50, question: "i9", answer: "i1",
+        answers: [
+            { x: 4, y: 320, width: 50, height: 50, answer: "i1" },
+            { x: 100, y: 320, width: 50, height: 50, answer: "i2" },
+            { x: 200, y: 320, width: 50, height: 50, answer: "i3" },
+            { x: 298, y: 320, width: 50, height: 50, answer: "i4" }
+        ]
+    },
+    {
+        x: 150, y: 10, width: 50, height: 50, question: "j10", answer: "j1",
+        answers: [
+            { x: 4, y: 320, width: 50, height: 50, answer: "j1" },
+            { x: 100, y: 320, width: 50, height: 50, answer: "j2" },
+            { x: 200, y: 320, width: 50, height: 50, answer: "j3" },
+            { x: 298, y: 320, width: 50, height: 50, answer: "j4" }
+        ]
+    },
 
 ];
 
@@ -105,7 +231,7 @@ let interval;
 /*DOMContentLoaded event is fired when the initial HTML 
 document has been completely loaded and parsed, without 
 waiting for stylesheets, images, and subframes to finish 
-loading. The "PortrisCanvas" element is stored in teh canvas variable.
+loading. The "PortrisCanvas" element is stored in the canvas variable.
 Also, the 2D rendering is stored in the context2D. 
 Then the DrawCanvas() function is called.
 */
@@ -124,14 +250,14 @@ function DrawCanvas() {
     canvas.height = 728;
 
     context2D.scale(2, 2);    
-    context2D.fillStyle = 'green';
+    context2D.fillStyle = 'white';
     context2D.fillRect(0, 0, canvas.width, canvas.height);
 
-    context2D.strokeStyle = 'yellow';
+    context2D.strokeStyle = 'green';
     context2D.strokeRect(1, 1, 340, 362);
 
     document.addEventListener('keydown', KeyMoveShape);
-    document.getElementById('current-level').innerHTML = level; 
+    
     Buttons();  
         
 }
@@ -149,7 +275,8 @@ function Buttons(){
         
     if(!gameOver) {               
         startButton.addEventListener("click", function () {
-            startButton.style.display = "none";            
+            startButton.style.display = "none"; 
+            RandomizeQuestion();         
             Question();
             Answer();
             Start();
@@ -164,7 +291,8 @@ function Buttons(){
             window.clearInterval(interval);
             gameOver = false;         
             resetButton.style.display = "none"; 
-            ResetGame();            
+            ResetGame(); 
+            RandomizeQuestion();           
             Question();            
             Answer();              
             Start();                   
@@ -172,10 +300,18 @@ function Buttons(){
     }   
 }
 
+/* This function will randomize the objects in the questions array. */
+function RandomizeQuestion(){
+    for(let i = questions.length - 1; i > 0; i--){    
+        let j = Math.floor(Math.random() * (i + 1));
+        [questions[i], questions[j]] = [questions[j], questions[i]];   
+    }   
+}
+
 /*Displays the question when called.*/
-function Question() {        
-    currentQuestion = questions[questionCount];    
-    context2D.fillStyle = "blue";
+function Question() {            
+    currentQuestion = questions[questionCount];       
+    context2D.fillStyle = "green";
     context2D.fillRect(currentQuestion.x, currentQuestion.y, currentQuestion.width, currentQuestion.height);     
     context2D.fillStyle = "black";
     context2D.textAlign = "middle";    
@@ -187,7 +323,7 @@ function Question() {
 function Answer() {     
     currentAnswers = questions[questionCount].answers;
     for (let i = 0; i < currentAnswers.length; i++) {        
-        context2D.fillStyle = "yellow";
+        context2D.fillStyle = "red";
         context2D.fillRect(currentAnswers[i].x, currentAnswers[i].y, currentAnswers[i].width, currentAnswers[i].height);
         context2D.fillStyle = "black";
         context2D.textAlign = "middle";
@@ -198,9 +334,9 @@ function Answer() {
 
 /*Deletes the question by replacing its shape with the background color.*/
 function Delete(){    
-    context2D.fillStyle = "green";
+    context2D.fillStyle = "white";
     context2D.fillRect(currentQuestion.x, currentQuestion.y, currentQuestion.width, currentQuestion.height);
-    context2D.fillStyle = "green";
+    context2D.fillStyle = "white";
     context2D.fillText(currentQuestion.question, currentQuestion.x + 1, currentQuestion.y + 30, 39);    
 }
 
@@ -220,7 +356,7 @@ function KeyMoveShape(key){
             WordCollision();
             direction = DIRECTION.RIGHT;
             Delete();
-            currentQuestion.x++;
+            currentQuestion.x += 4;
             Question();
         }
 
@@ -229,24 +365,24 @@ function KeyMoveShape(key){
             WordCollision();
             direction = DIRECTION.LEFT;
             Delete();
-            currentQuestion.x--;
+            currentQuestion.x -= 4;
             Question();
         }
     }   
 }
 
 /*Checks for collisions with the walls.*/
-function HorizontalCollision() {
+function HorizontalCollision() {    
     let leftWall = 3;
     let rightWall = 348;
 
     if (currentQuestion.x <= leftWall) {        
         Delete();
-        currentQuestion.x++;
+        currentQuestion.x += 4;
 
     } else if (currentQuestion.x + 60 >= rightWall) {        
         Delete();
-        currentQuestion.x--;
+        currentQuestion.x -= 4;
     }
 }
 
@@ -279,21 +415,20 @@ the level will increase. Then the NextQuestion() function is called.
 */
 function QandACheck(currentQuestion, answer){      
     if (currentQuestion.answer === answer) {
-        score += 5;                       
-        document.getElementById('current-score').innerHTML = score;         
-        if(score > 15){
-            level += 1;                                   
-            document.getElementById('current-level').innerHTML = level;            
-            alert("last level");
-        } else if(score > 10){
-            level += 1;
-            document.getElementById('current-level').innerHTML = level;            
-            alert(" second New level");
-        } else if(score > 5){
-            level += 1;
-            document.getElementById('current-level').innerHTML = level;            
-            alert(" first New level");
-        }       
+        console.log("works")
+        $.ajax({
+            url: '/update_score',
+            type: 'POST',
+            data: { score: 5 },
+            success: function (data) {
+                // Update the score displayed on the page
+                $('#current-score').text(data.score);
+                $('#current-level').text(data.level);
+            },
+            error: function (error) {
+                console.error('Error updating score:', error);
+            }
+            });
     }           
     NextQuestion();
 }
@@ -302,15 +437,13 @@ function QandACheck(currentQuestion, answer){
 The canvas is also deleted and reDrawn with DrawCanvas() Function.
 */
 function ResetGame(){           
-    score = 0;
-    level = 1;   
+     
     questionCount = questionCountReset;
     context2D.clearRect(0, 0, canvas.width, canvas.height);
     direction = DIRECTION.IDLE;     
     currentQuestion.x = questionStartPosistionX;
     currentQuestion.y = questionStartPosistionY; 
-    document.getElementById('current-score').innerHTML = score; 
-    document.getElementById('current-level').innerHTML = level;  
+    
     DrawCanvas();
 }
 
@@ -335,7 +468,7 @@ if false, "gameOver" is set to true and the game will stop.
 */
 function NextQuestion(){      
     if (questionCount < questions.length - 1) {
-        Delete();
+        Delete();               
         questionCount++;
         Question();
         Answer();               
@@ -354,15 +487,12 @@ function Start(){
     interval = window.setInterval(function(){        
         if (!gameOver) {
             WordCollision();
-            Delete();
-            if(!gameOver){       
-                currentQuestion.y++;
-                Question();
-            }
+            Delete();      
+            currentQuestion.y++;
+            Question();
         } 
     }, 20);
 }      
 
 </script>
 
-{%endblock%}
