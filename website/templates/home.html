@@ -18,49 +18,48 @@
     <title>{% block title %}Home{% endblock %}</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Pixelcola</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        {% if user.is_authenticated %}
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/logout">Logout</a>
-              </li>
-            
-              <li class="nav-item">
-                <a class="nav-link" href="/game">CyberScramble</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/gameV2">Portris</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/gameV3">HangMan</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/leaderBoard">Leader Board</a>
-              </li> 
-            </ul>
+
+
+  <nav class="navBar">
+    <div class="container6">
+      <a class="navBar-brand" href="#">Pixelcola</a>
+      <div class="navBar-menu">
+        <ul class="navBar-nav">
+          {% if user.is_authenticated %}
+            <li class="nav-Item">
+              <a class="nav-Link" href="/">Home</a>
+            </li>
+            <li class="nav-Item">
+              <a class="nav-Link" href="/logout">Logout</a>
+            </li>
+            <li class="nav-Item">
+              <a class="nav-Link" href="/game">CyberScramble</a>
+            </li>
+            <li class="nav-Item">
+              <a class="nav-Link" href="/gameV2">Portris</a>
+            </li>
+            <li class="nav-Item">
+              <a class="nav-Link" href="/gameV3">HangMan</a>
+            </li>
+            <li class="nav-Item">
+              <a class="nav-Link" href="/leaderBoard">Leader Board</a>
+            </li>
           {% else %}
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="/login">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/sign-up">Sign Up</a>
-          </li> 
+            <li class="nav-Item">
+              <a class="nav-Link" href="/login">Login</a>
+            </li>
+            <li class="nav-Item">
+              <a class="nav-Link" href="/sign-up">Sign Up</a>
+            </li>
+          {% endif %}
         </ul>
-        {% endif %}
-       
       </div>
     </div>
-</nav>
+  </nav>
+  
+
+
+
 
 <section class="homeScreen">
 
@@ -329,8 +328,6 @@
  
     <div class="content">
       
-      <h1 align="center">PixelCola</h1>
-   
       <div class="banner" id="banner">
         <p> Welcome {{ user.email }}</p>
         <p>Current Score: <span class="bannerSpan" id="current-score">{{ user.score }}</span></p>
@@ -340,7 +337,7 @@
     <br />
     <div class="HomeAlert" id="myModal">
        <div class="HomeAlertContent">
-          <p>READY TO PLAY</p>
+          <p>We need you to save Florida !!! Start your adventure by playing and completing the mini games in each of the bouncing hubs while learning Cybersecurity !! Press Play to start your adventure in PixelCola !</p>
           <button class="close">PLAY</button>
       </div>
     </div>
@@ -352,12 +349,15 @@
 
           <div class="accordion">
             <div class="accordion-item">
+              {% if user.level >= 1 %} 
                 <div class="accordion-header">
+                  
                   <div class="completed">
                     <p class="map-p">Completed</p>
                     <img src="../static/greencheck.png" alt="Green check mark" class="greencheck">
                     </div>
                 </div>
+                {% endif %}
                 <h2 class="accordion-header" id="headingOne">
                   <button id="accordionButton" class="accordion-button collapsed" onclick="toggleAccordion('collapseOne', 'accordionButton')">
                     Pensacola Hub
@@ -366,8 +366,7 @@
                 </h2>
                 <div id="collapseOne" class="accordion-collapse">
                     <div class="accordion-body">
-                        <strong>This is the first item's accordion body.</strong>
-                        <a href="/game">CyberScramble</a>
+                        <strong>Complete this level via playing  <a href="/game">CyberScramble</a> gaining enough points to progress to the next hub </strong>
                     </div>
                 </div>
             </div>
@@ -402,8 +401,8 @@
               </h2>
               <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                  <strong>This is the first item's accordion body.</strong> 
-                  <a  href="/gameV2">Portris</a>
+                  <strong>Complete this level via playing  <a  href="/gameV2">Portris</a> gaining enough points to progress to the next hub</strong> 
+                 
                 </div>
               </div>
             </div>
@@ -433,8 +432,7 @@
                 </h2>
                 <div id="collapseThree" class="accordion-collapse">
                     <div class="accordion-body">
-                        <strong>This is the first item's accordion body.</strong>
-                        <a  href="/gameV3">Hangman</a>
+                      <strong>Complete this level via playing  <a  href="/gameV3">Hangman</a> gaining enough points to progress to the next hub</strong> 
                     </div>
                 </div>
             </div>
@@ -453,6 +451,7 @@
 
   
 </section>
+
 </body>
 <script type="text/javascript">
 
