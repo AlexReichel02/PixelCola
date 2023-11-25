@@ -10,17 +10,6 @@ auth = Blueprint('auth', __name__)
 @auth.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    if request.method == 'POST': 
-        note = request.form.get('note')#Gets the note from the HTML 
-
-        if len(note) < 1:
-            flash('Note is too short!', category='error') 
-        else:
-            new_note = Note(data=note, user_id=current_user.id)  #providing the schema for the note 
-            db.session.add(new_note) #adding the note to the database 
-            db.session.commit()
-            flash('Note added!', category='success')
-
     return render_template("home.html", user=current_user)
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -42,13 +31,11 @@ def login():
 
     return render_template("login.html", user=current_user)
 
-
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
-
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
@@ -81,7 +68,6 @@ def sign_up():
 
     return render_template("sign_up.html", user=current_user)
 
-
 @auth.route('/update_score', methods=['POST'])
 def update_score():
     new_score = request.form.get('score')
@@ -109,18 +95,15 @@ def update_score():
     flash('Score updated!', category='success')
     return jsonify(score=current_user.score,level=current_user.level)
 
-
 @auth.route('/game', methods=['GET', 'POST'])
 @login_required
 def game():
     return render_template("game.html", user=current_user)
    
-
 @auth.route('/gameV2', methods=['GET', 'POST'])
 @login_required
 def gameV2():
     return render_template("gamev2.html", user=current_user)
-
 
 @auth.route('/gameV3', methods=['GET', 'POST'])
 @login_required

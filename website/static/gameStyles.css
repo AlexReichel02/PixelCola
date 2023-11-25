@@ -560,6 +560,7 @@ tr{
   .imageContainer img{
     max-width: 400px;
     max-height: 500px;
+    display: none;
    
   }
 
@@ -943,6 +944,10 @@ input[type="submit"]:active
   width: fit-content;
 }
 
+.accordion-item button{
+  font-size: 26px;
+}
+
 .accordion-button {
   background-color: #f1f1f1;
   border: none;
@@ -1061,6 +1066,8 @@ input[type="submit"]:active
   width: 200px;
 
 }
+
+
 
 
 

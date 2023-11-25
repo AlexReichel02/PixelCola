@@ -1,21 +1,12 @@
 
-
 <head>
     <meta charset="utf-8" />
-  
-
-  
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-   
-    <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="../static/gameStyles.css">
-  <!-- Stylesheet -->
-  <title>{% block title %}Portris{% endblock %}</title>
-  </head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../static/gameStyles.css">
+    <title>{% block title %}Portris{% endblock %}</title>
+ </head>
 
 
   <nav class="navBar">
@@ -28,19 +19,10 @@
               <a class="nav-Link" href="/">Home</a>
             </li>
             <li class="nav-Item">
+                <a class="nav-Link" href="/leaderBoard">Leader Board</a>
+              </li>
+            <li class="nav-Item">
               <a class="nav-Link" href="/logout">Logout</a>
-            </li>
-            <li class="nav-Item">
-              <a class="nav-Link" href="/game">CyberScramble</a>
-            </li>
-            <li class="nav-Item">
-              <a class="nav-Link" href="/gameV2">Portris</a>
-            </li>
-            <li class="nav-Item">
-              <a class="nav-Link" href="/gameV3">HangMan</a>
-            </li>
-            <li class="nav-Item">
-              <a class="nav-Link" href="/leaderBoard">Leader Board</a>
             </li>
           {% else %}
             <li class="nav-Item">
@@ -88,14 +70,11 @@
     </div>
     <div class="spacer"></div>
     <br />
-    
-   
-    
     <br />
 
   
     <canvas id="PortrisCanvas"></canvas>
-</div>
+    </div>
     <br />
     <br />
 </div>
@@ -105,15 +84,11 @@
     <div class="NoGameSection">
         <br/>
         <br />
-    
-    
         <p>You do not have enough points to play this game at the moment</p>
         <p>Try again after gaining enough points</p>
     </div>
 
     {% endif %}
-
-
 <br />
 
 
@@ -252,17 +227,11 @@ and calls the Button() function.
 function DrawCanvas() {
     canvas.width = 705;
     canvas.height = 728;
-
     context2D.scale(2, 2);    
     context2D.fillStyle = 'black';
     context2D.fillRect(0, 0, canvas.width, canvas.height);
-
-   
-
     document.addEventListener('keydown', KeyMoveShape);
-    
-    Buttons();  
-        
+    Buttons();    
 }
 
 /* Buttons() function stores the "startButton" and "resetButton" elements 
@@ -278,7 +247,8 @@ function Buttons(){
         
     if(!gameOver) {               
         startButton.addEventListener("click", function () {
-            startButton.style.display = "none";            
+            startButton.style.display = "none";  
+            RandomizeQuestion();            
             Question();
             Answer();
             Start();
@@ -293,7 +263,8 @@ function Buttons(){
             window.clearInterval(interval);
             gameOver = false;         
             resetButton.style.display = "none"; 
-            ResetGame();            
+            ResetGame();  
+              RandomizeQuestion();            
             Question();            
             Answer();              
             Start();                   
@@ -301,15 +272,23 @@ function Buttons(){
     }   
 }
 
+function RandomizeQuestion(){
+    for(let i = questions.length - 1; i > 0; i--){    
+        let j = Math.floor(Math.random() * (i + 1));
+        [questions[i], questions[j]] = [questions[j], questions[i]];   
+    }   
+}
+
 /*Displays the question when called.*/
 function Question() {        
+    
     currentQuestion = questions[questionCount];    
     context2D.fillStyle = "green";
     context2D.fillRect(currentQuestion.x, currentQuestion.y, currentQuestion.width, currentQuestion.height);     
     context2D.fillStyle = "black";
     context2D.textBaseline = "middle";
     context2D.textAlign = "middle"; 
-    context2D.font = "16px Arial";
+    context2D.font = "16px Gill Sans";
     context2D.fillText(currentQuestion.question, currentQuestion.x + 5, currentQuestion.y + 25, 39);           
 }
 
@@ -323,8 +302,8 @@ function Answer() {
         context2D.textBaseline = "middle";
         context2D.textAlign = "middle"; 
         //context2D.textAlign = "center"; 
-        context2D.font = "16px Arial";
-        context2D.fillText(currentAnswers[i].answer, currentAnswers[i].x + 5, currentAnswers[i].y + 25, 39);
+        context2D.font = "16px Gill Sans";
+        context2D.fillText(currentAnswers[i].answer, currentAnswers[i].x + 7, currentAnswers[i].y + 25, 39);
     }     
 }
 
@@ -336,7 +315,7 @@ function Delete(){
     context2D.fillStyle = "black";
     context2D.fillRect(currentQuestion.x, currentQuestion.y, currentQuestion.width, currentQuestion.height);
     context2D.fillStyle = "black";
-    context2D.fillText(currentQuestion.question, currentQuestion.x + 5, currentQuestion.y + 25, 39);    
+    context2D.fillText(currentQuestion.question, currentQuestion.x + 7, currentQuestion.y + 25, 39);    
     context2D.textBaseline="middle";
     context2D.textAlign = "middle"; 
     //context2D.textAlign = "center"; 
@@ -349,7 +328,7 @@ function KeyMoveShape(key){
             WordCollision();
             direction = DIRECTION.DOWN;
             Delete();
-            currentQuestion.y++;
+            currentQuestion.y+=5;
             Question();
         }
 
@@ -376,15 +355,15 @@ function KeyMoveShape(key){
 /*Checks for collisions with the walls.*/
 function HorizontalCollision() {
     let leftWall = 3;
-    let rightWall = 348;
+    let rightWall = 358;
 
     if (currentQuestion.x <= leftWall) {        
         Delete();
-        currentQuestion.x++;
+        currentQuestion.x+=7;
 
     } else if (currentQuestion.x + 60 >= rightWall) {        
         Delete();
-        currentQuestion.x--;
+        currentQuestion.x-=5;
     }
 }
 
@@ -417,7 +396,6 @@ the level will increase. Then the NextQuestion() function is called.
 */
 function QandACheck(currentQuestion, answer){      
     if (currentQuestion.answer === answer) {
-        console.log("works")
         $.ajax({
             url: '/update_score',
             type: 'POST',
@@ -455,7 +433,7 @@ Afterwards all questions positions are reset to their original posistions.
 function GameOver(){
     context2D.fillStyle = "black";
     context2D.textAlign = "middle";    
-    context2D.font = "16px Arial";
+    context2D.font = "16px Gill Sans";
     context2D.fillText("Game Over", 150, 100, 50, 30);    
     for(let i = 0; i < questions.length - 1; i++){
         questions[i].x = questionStartPosistionX;
@@ -469,7 +447,8 @@ if true, the next question will be called,
 if false, "gameOver" is set to true and the game will stop.
 */
 function NextQuestion(){      
-    if (questionCount < questions.length - 1) {
+    console.log(questionCount ,)
+    if (questionCount < 5) {
         Delete();
         questionCount++;
         Question();

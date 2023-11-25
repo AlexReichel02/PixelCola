@@ -5,12 +5,7 @@
   <link rel="stylesheet" href="../static/gameStyles.css">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-
-  <link
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-    crossorigin="anonymous"
-  />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" />
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <title>{% block title %}Leaderboard{% endblock %}</title>
 </head>
@@ -25,19 +20,10 @@
             <a class="nav-Link" href="/">Home</a>
           </li>
           <li class="nav-Item">
-            <a class="nav-Link" href="/logout">Logout</a>
-          </li>
-          <li class="nav-Item">
-            <a class="nav-Link" href="/game">CyberScramble</a>
-          </li>
-          <li class="nav-Item">
-            <a class="nav-Link" href="/gameV2">Portris</a>
-          </li>
-          <li class="nav-Item">
-            <a class="nav-Link" href="/gameV3">HangMan</a>
-          </li>
-          <li class="nav-Item">
             <a class="nav-Link" href="/leaderBoard">Leader Board</a>
+          </li>
+          <li class="nav-Item">
+            <a class="nav-Link" href="/logout">Logout</a>
           </li>
         {% else %}
           <li class="nav-Item">
@@ -325,24 +311,18 @@
                 <br />
                 <br />
                 <table class="table">
-                    
                     <tbody>
                         <tr>
-                    
                             <th>Name</th>
                             <th>Score</th>
                             <th>Level</th>
-                            
-                            
                         </tr>
                     
                         {% for user in leaderBoard_data %}
                         <tr>
                             <td>{{ user.first_name }}</td>
-                            
                             <td>{{ user.score }}</td>
                             <td>{{ user.level }}</td>
-                           
                         </tr>
                        
                         {% endfor %}

@@ -5,20 +5,12 @@
     <link rel="stylesheet" href="../static/gameStyles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" 
-    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-    crossorigin="anonymous">
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>{% block title %}Home{% endblock %}</title>
 </head>
 <body>
-
 
   <nav class="navBar">
     <div class="container6">
@@ -30,19 +22,10 @@
               <a class="nav-Link" href="/">Home</a>
             </li>
             <li class="nav-Item">
-              <a class="nav-Link" href="/logout">Logout</a>
-            </li>
-            <li class="nav-Item">
-              <a class="nav-Link" href="/game">CyberScramble</a>
-            </li>
-            <li class="nav-Item">
-              <a class="nav-Link" href="/gameV2">Portris</a>
-            </li>
-            <li class="nav-Item">
-              <a class="nav-Link" href="/gameV3">HangMan</a>
-            </li>
-            <li class="nav-Item">
               <a class="nav-Link" href="/leaderBoard">Leader Board</a>
+            </li>
+            <li class="nav-Item">
+              <a class="nav-Link" href="/logout">Logout</a>
             </li>
           {% else %}
             <li class="nav-Item">
@@ -57,10 +40,6 @@
     </div>
   </nav>
   
-
-
-
-
 <section class="homeScreen">
 
   <span></span>
@@ -333,14 +312,17 @@
         <p>Current Score: <span class="bannerSpan" id="current-score">{{ user.score }}</span></p>
         <p> Current Level: <span class="bannerSpan" id="current-level">{{ user.level }}</span> </p>
     </div>
+
     <br />
     <br />
+  
     <div class="HomeAlert" id="myModal">
        <div class="HomeAlertContent">
           <p>We need you to save Florida !!! Start your adventure by playing and completing the mini games in each of the bouncing hubs while learning Cybersecurity !! Press Play to start your adventure in PixelCola !</p>
           <button class="close">PLAY</button>
       </div>
     </div>
+
     <div class="circle">
 
     <div class="map">
@@ -351,15 +333,16 @@
             <div class="accordion-item">
               {% if user.level >= 1 %} 
                 <div class="accordion-header">
-                  
+          
                   <div class="completed">
                     <p class="map-p">Completed</p>
                     <img src="../static/greencheck.png" alt="Green check mark" class="greencheck">
                     </div>
+
                 </div>
                 {% endif %}
                 <h2 class="accordion-header" id="headingOne">
-                  <button id="accordionButton" class="accordion-button collapsed" onclick="toggleAccordion('collapseOne', 'accordionButton')">
+                <button id="accordionButton" class="accordion-button collapsed" onclick="toggleAccordion('collapseOne', 'accordionButton')">
                     Pensacola Hub
                 </button>
                 
@@ -371,49 +354,37 @@
                 </div>
             </div>
         </div>
-        
-       
-        
-        
-        
-    
+      
         </div>
 
-
-
         <div class="game2">
-
-
 
           <div class="accordion" id="accordionExample2">
             <div class="accordion-item">
               {% if user.level >= 3 %} <!-- Add your required user level here -->
               <div class="completed">
-              <p class="map-p">Completed</p>
-              <img src="../static/greencheck.png" alt="Green check mark" class="greencheck">
-             <!-- Green dot for high enough user level -->
-            </div>
+                <p class="map-p">Completed</p>
+                <img src="../static/greencheck.png" alt="Green check mark" class="greencheck">
+           
+              </div>
+
             {% endif %}
               <h2 class="accordion-header" id="headingTwo">
                 <button id="accordionButton" class="accordion-button collapsed" onclick="toggleAccordion('collapseTwo', 'accordionButton')">
                   Miami Hub
-              </button>
+                </button>
               </h2>
               <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                   <strong>Complete this level via playing  <a  href="/gameV2">Portris</a> gaining enough points to progress to the next hub</strong> 
-                 
                 </div>
               </div>
             </div>
           </div>
           
-
         </div>
 
-
         <div class="game3" >
-
           <div class="accordion" >
             <div class="accordion-item">
                 <div class="accordion-header">
@@ -438,9 +409,6 @@
             </div>
         </div>
 
-
-
-
         </div>
 
     </div>
@@ -448,11 +416,9 @@
 </div>
 </div>
 
-
-  
 </section>
-
 </body>
+
 <script type="text/javascript">
 
 function toggleAccordion(collapseId, buttonId) {
@@ -467,7 +433,6 @@ function toggleAccordion(collapseId, buttonId) {
         button.classList.remove("collapsed");
     }
 }
-
 
 const modal = document.getElementById("myModal");
 const closeBtn = document.getElementsByClassName("close")[0];

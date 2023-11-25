@@ -1,21 +1,11 @@
-
-
 <head>
     <meta charset="utf-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-   
-    <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="../static/gameStyles.css">
-  <!-- Stylesheet -->
-  <title>{% block title %}Hangman{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../static/gameStyles.css">
+     <title>{% block title %}Hangman{% endblock %}</title>
   </head>
-
-
 
   <nav class="navBar">
     <div class="container6">
@@ -27,19 +17,10 @@
               <a class="nav-Link" href="/">Home</a>
             </li>
             <li class="nav-Item">
-              <a class="nav-Link" href="/logout">Logout</a>
-            </li>
-            <li class="nav-Item">
-              <a class="nav-Link" href="/game">CyberScramble</a>
-            </li>
-            <li class="nav-Item">
-              <a class="nav-Link" href="/gameV2">Portris</a>
-            </li>
-            <li class="nav-Item">
-              <a class="nav-Link" href="/gameV3">HangMan</a>
-            </li>
-            <li class="nav-Item">
               <a class="nav-Link" href="/leaderBoard">Leader Board</a>
+            </li>
+            <li class="nav-Item">
+              <a class="nav-Link" href="/logout">Logout</a>
             </li>
           {% else %}
             <li class="nav-Item">
@@ -106,14 +87,13 @@
   </div>
 </div>
 {% else %}
-<div class="NoGameSection">
-  <br/>
-  <br />
 
-
-  <p>You do not have enough points to play this game at the moment</p>
-  <p>Try again after gaining enough points</p>
-</div>
+  <div class="NoGameSection">
+    <br/>
+    <br />
+    <p>You do not have enough points to play this game at the moment</p>
+    <p>Try again after gaining enough points</p>
+  </div>
 {% endif %}
 
 <br />
@@ -438,8 +418,6 @@ const initializer = () => {
         //Count==6 because head,body,left arm, right arm,left leg,right leg
         if (count == 6) {
           modal.style.display = "block";
-  
-       
           resultText.innerHTML = `<h2 class='lose-msg'>You Lose!!</h2><p>The word was <span>${chosenWord}</span></p>`;
           blocker();
         }

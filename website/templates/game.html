@@ -1,10 +1,10 @@
-    <head>
+ <head>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="../static/gameStyles.css">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <title>{% block title %}CyberScramble{% endblock %}</title>
-      </head>
+  </head>
 <body>
       <nav class="navBar">
         <div class="container6">
@@ -16,19 +16,10 @@
                   <a class="nav-Link" href="/">Home</a>
                 </li>
                 <li class="nav-Item">
-                  <a class="nav-Link" href="/logout">Logout</a>
-                </li>
-                <li class="nav-Item">
-                  <a class="nav-Link" href="/game">CyberScramble</a>
-                </li>
-                <li class="nav-Item">
-                  <a class="nav-Link" href="/gameV2">Portris</a>
-                </li>
-                <li class="nav-Item">
-                  <a class="nav-Link" href="/gameV3">HangMan</a>
-                </li>
-                <li class="nav-Item">
                   <a class="nav-Link" href="/leaderBoard">Leader Board</a>
+                </li>
+                <li class="nav-Item">
+                  <a class="nav-Link" href="/logout">Logout</a>
                 </li>
               {% else %}
                 <li class="nav-Item">
@@ -61,8 +52,6 @@
 <div class="containerV2">
     <h2>Word Scramble</h2>
 
-    
-   
     <div class="content">
         <p class="word"></p>
         <br />
@@ -254,12 +243,8 @@ const checkWord = () => {
         } 
 
         if(userWord == correctWord){
-
-           // handleWin();
            
             messageText.innerText="Congrats! " + correctWord +" is the correct Word";
-            
-    
             score.value=5;
 
             $.ajax({
@@ -276,20 +261,13 @@ const checkWord = () => {
             }
             });
             //refresh();
-
-           
-           
-        
             setTimeout(function(){
-             
               initGame()
             },1000);
            
         }else{
             score.value=0;
-            
             return (messageText.innerText = "Oops! " + userWord + " is not the correct Word");
-   
         }
 
         //alert("Oops! ${userWord} is not a correct Word");
