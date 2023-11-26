@@ -11,4 +11,6 @@ pip install flask_login
 
 pip install sqlalchemy.sql
 
-After the packages have been installed the user will type "python3 main.py" to run the application
+After the packages have been installed the user will type "python3 main.py"  to run the application
+
+Type the following in a web browser http://127.0.0.1:5001 to access the application
