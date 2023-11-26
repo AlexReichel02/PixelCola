@@ -749,8 +749,30 @@ section .BackgroundContainer .content .form .inputBox input
 	font-weight: 500;
 	font-size: 1.5rem;
 
-
 }
+
+.LoginButton input{ 
+  background-image: linear-gradient(to right, #52c234 0%, #061700  51%, #52c234  100%);
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;            
+  
+  border-radius: 10px;
+  display: block;
+}
+
+
+.LoginButton input:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+
 section .BackgroundContainer .content .form .inputBox i 
 {
 	position: absolute;
@@ -778,6 +800,9 @@ section .BackgroundContainer .content .form .inputBox i
 	display: flex;
 	justify-content: space-between;
 }
+
+
+
 .BackgroundContainer .content .form .links a 
 {
 	color: #fff;
@@ -789,6 +814,19 @@ section .BackgroundContainer .content .form .inputBox i
 	color: #0f0;
 	font-weight: 600;
 }
+
+.BackgroundContainer .content .form .links a:nth-child(2):hover{
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+.BackgroundContainer .content .form .links a:nth-child(1):hover{
+  background-position: right center; /* change the direction of the change here */
+  color: #0f0;
+  text-decoration: none;
+}
+
 BackgroundContainer .content .form .inputBox input[type="submit"]
 {
 	padding: 10px;
@@ -947,6 +985,18 @@ input[type="submit"]:active
 .accordion-item button{
   font-size: 26px;
 }
+
+.accordion-body a{
+  text-decoration: none;
+  color: rgb(8, 150, 8);
+}
+
+
+.accordion-body a:hover{
+  text-decoration: none;
+  color: #000;
+}    
+
 
 .accordion-button {
   background-color: #f1f1f1;
