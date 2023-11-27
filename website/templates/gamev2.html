@@ -311,7 +311,7 @@
   </div>
 <br />
 <div class="section3">
-    {% if user.level < 3 %} 
+    {% if user.level >= 3 %} 
    <div class="portrisSection">
     <div class="instructions">
         <h2>Portris</h2>
@@ -324,7 +324,7 @@
             <button class="check-word" id="resetButton" style="display: none;">Play Again</button>
         </div>
         <div class="animation">
-            <p>You can Advance or keep playing</p>
+            <p>You have saved the state of Florida !! Congratulations !!</p>
         </div>
     </div>
     <div class="spacer"></div>
@@ -363,7 +363,7 @@ const animationElement = document.querySelector('.animation');
 const level = document.querySelector('.level');
 
 function handleWin() {
-  if(level.textContent == '1'){
+  if(level.textContent == '3'){
   console.log(level);
   animationElement.style.display = 'block'; // Display the animation
   animationElement.classList.add('animate');

@@ -1118,10 +1118,11 @@ input[type="submit"]:active
 .bannerSpan{
   all: initial;
   padding: 10px;
-  font-size: 26px;
-  color: white;
+  font-size: 34px;
+  color: #bbb;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: 600;
+
 }
 
 .bannerSpan:hover{
