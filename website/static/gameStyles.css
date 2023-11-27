@@ -193,11 +193,11 @@ h1{
     text-align: center;
 }
 
-.containerV2 .content{
+.containerV2 .WordContent{
     margin: 25px 20px 35px;
 }
 
-.content .word{
+.WordContent .word{
     user-select: none;
     font-size: 60px;
     font-weight: 600;
@@ -209,7 +209,7 @@ h1{
     color: #5372f0;
 }
 
-.content .details{
+.WordContent .details{
    justify-content: center;
    text-align: center;
 
@@ -614,9 +614,7 @@ tr{
     cursor: pointer;
 }
 
-.dashes{
-    padding: 5px;
-}
+
 
 .HangmanSide{
   width: 1100px;
@@ -859,15 +857,13 @@ input[type="submit"]:active
 	position: absolute;
 	width: 1140px;
   height: fit-content;
-
 	z-index: 3;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	padding: 40px;
 	border-radius: 4px;
-	box-shadow: 0 15px 35px rgba(0,0,0,9);
- 
+	box-shadow: 0 15px 35px rgba(0,0,0,9); 
 }
 
 .homeContainer .content{
@@ -904,12 +900,7 @@ input[type="submit"]:active
 	animation: animate 5s linear infinite;
 }
 
-.bannerSpan{
-  all: initial;
-  padding: 10px;
-  font-size: 26px;
-  color: white;
-}
+
 
 
 .HomeAlert{
@@ -1113,6 +1104,7 @@ input[type="submit"]:active
   justify-content: center;
   border-color: #2bbf26;
   box-shadow: 0 0 50px #29bf26;
+  background-color: #222;
   
 }
 
@@ -1122,6 +1114,83 @@ input[type="submit"]:active
 }
 
 
+
+.bannerSpan{
+  all: initial;
+  padding: 10px;
+  font-size: 26px;
+  color: white;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 600;
+}
+
+.bannerSpan:hover{
+  all: initial;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: white;
+  padding: 10px;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.level{
+  all: initial;
+  padding: 10px;
+  font-size: 26px;
+  color: white;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 600;
+}
+
+.score{
+  all: initial;
+  padding: 10px;
+  font-size: 26px;
+  color: white;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 600;
+}
+
+
+.score:hover,.level:hover{
+  all: initial;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 600;
+}
+
+.dashes{
+  padding: 5px;
+  all: initial;
+  padding: 10px;
+  font-size: 26px;
+  color: white;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 600;
+  
+}
+
+.bannerSpan2{
+  all: initial;
+  padding: 10px;
+  font-size: 26px;
+  color: #000;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 600;
+}
+
+.Game3Container{
+    position: absolute;
+    width: 1140px;
+    height: fit-content;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    border-radius: 4px;
+    box-shadow: 0 15px 35px rgba(0,0,0,9);
+    margin-bottom: 400px;
+}
 
 
 
