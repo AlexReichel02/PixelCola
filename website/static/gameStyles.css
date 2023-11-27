@@ -367,7 +367,7 @@ tr{
     padding: 10px;
     text-align: center;
     color: white;
-    font-size: 30px;
+    font-size: 26px;
     display: none; /* Initially hidden */
     /* Add animation properties here */
   }
@@ -1118,7 +1118,7 @@ input[type="submit"]:active
 .bannerSpan{
   all: initial;
   padding: 10px;
-  font-size: 34px;
+  font-size: 30px;
   color: #bbb;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: 600;
